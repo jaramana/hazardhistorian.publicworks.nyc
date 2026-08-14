@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data flow | NYC Hazard Historian</title>
+<meta name="description" content="An interactive map of how source records become the event archive: eight sources, five pipeline stages, and the rules each stage keeps.">
+<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/dataflow.css">
+</head>
+<body>
+<a class="skip" href="#main-content">Skip to the content</a>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <a class="wordmark" href="index.html">NYC Hazard Historian</a>
+    <nav aria-label="Sections">
+      <a href="explore.html">Explore</a>
+      <a href="compare.html">Compare</a>
+      <a href="method.html">Method</a>
+      <a href="about.html">About</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main-content">
+  <h1>Data flow</h1>
+  <p class="lede">Eight public sources, five pipeline stages, one archive. Open
+  any stage to see what it does to the data and the rule it keeps. The counts
+  below are read from the current build, not written by hand.</p>
+
+  <div class="df-toolbar">
+    <dl class="df-stats" id="df-stats" aria-live="polite">
+      <div><dt>Events</dt><dd data-stat="events">—</dd></div>
+      <div><dt>Source rows</dt><dd data-stat="event_rows">—</dd></div>
+      <div><dt>Coverage</dt><dd data-stat="coverage">—</dd></div>
+      <div><dt>Built</dt><dd data-stat="built">—</dd></div>
+    </dl>
+    <div class="df-actions">
+      <button type="button" class="btn btn-quiet btn-small" id="df-expand">Open all stages</button>
+      <button type="button" class="btn btn-quiet btn-small" id="df-collapse">Close all</button>
+    </div>
+  </div>
+
+  <!-- ---- Band: sources ---------------------------------------- -->
+  <section class="df-band df-band-source" aria-labelledby="df-h-sources">
+    <h2 class="df-band-title" id="df-h-sources">Sources</h2>
+    <p class="df-band-note">Federal and city records, each fetched from its
+    publisher. Radar is the exception: it is never downloaded, and is read live
+    by the browser when a map is opened.</p>
+    <ul class="df-grid df-grid-sources" id="df-sources"></ul>
+  </section>
+
+  <div class="df-flow" aria-hidden="true"><span class="df-flow-line"></span><span class="df-flow-label">downloaded and checked</span></div>
+
+  <!-- ---- Band: pipeline --------------------------------------- -->
+  <section class="df-band df-band-pipeline" aria-labelledby="df-h-pipeline">
+    <h2 class="df-band-title" id="df-h-pipeline">pipeline/</h2>
+    <p class="df-band-note">Five stages, deliberately separate, so a change to
+    one does not re-run the others. Python standard library only.</p>
+
+    <div class="df-config">
+      <p class="df-config-name">00_config.py</p>
+      <p class="df-config-desc">Every tunable value: source URLs and dataset
+      versions, the zone and county mapping, the hazard vocabulary, validation
+      thresholds, unit conversions and the hand-declared event merges. Nothing
+      downstream hard-codes a URL or a cutoff.</p>
+      <p class="df-config-tick" aria-hidden="true">governs every stage below</p>
+    </div>
+
+    <ol class="df-stages" id="df-stages"></ol>
+  </section>
+
+  <div class="df-flow" aria-hidden="true"><span class="df-flow-line"></span><span class="df-flow-label">written only if validation passed</span></div>
+
+  <!-- ---- Band: outputs ---------------------------------------- -->
+  <section class="df-band df-band-output" aria-labelledby="df-h-outputs">
+    <h2 class="df-band-title" id="df-h-outputs">Outputs</h2>
+    <p class="df-band-note">Staged first, then moved into place in one step, so
+    a failed build leaves the live files untouched.</p>
+    <ul class="df-grid df-grid-outputs" id="df-outputs"></ul>
+    <ul class="df-invariants">
+      <li>Every measure carries a status — <code>ok</code>,
+      <code>not_collected</code>, <code>withheld</code>,
+      <code>not_applicable</code> — never a bare zero.</li>
+      <li>Derived figures, like storm surge and event peaks, are labelled as
+      derived everywhere they appear.</li>
+      <li>Dollars travel in both bases: nominal as published, and adjusted with
+      the metropolitan consumer price index.</li>
+    </ul>
+  </section>
+
+  <div class="df-flow" aria-hidden="true"><span class="df-flow-line"></span><span class="df-flow-label">read by the browser</span></div>
+
+  <!-- ---- Band: site ------------------------------------------- -->
+  <section class="df-band df-band-site" aria-labelledby="df-h-site">
+    <h2 class="df-band-title" id="df-h-site">The site</h2>
+    <p class="df-band-note">Static HTML, CSS and JavaScript. No framework, no
+    bundler. The whole explorer works over one index file, which is why filtering
+    keeps up with typing.</p>
+    <ul class="df-grid df-grid-site" id="df-site"></ul>
+  </section>
+
+  <p class="df-foot">Every stage, source and rule on this page is defined in one
+  place: the <code>FLOW</code> block in <code>docs/js/dataflow.js</code>. The
+  static diagram in the README is generated from the matching
+  <code>CONFIG</code> block in <code>tools/make_dataflow_diagram.py</code>.</p>
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <p class="colophon"><strong>An independent project.</strong> A rebuild from
+    public sources, not affiliated with New York City Emergency Management or
+    the City of New York. <a href="about.html">About</a>,
+    <a href="method.html#downloads">data and downloads</a>,
+    <a href="https://publicworks.nyc">publicworks.nyc</a>.</p>
+  </div>
+</footer>
+
+<script src="js/dataflow.js"></script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Event | NYC Hazard Historian</title>
+<meta name="description" content="One hazard event: what was measured, what was recorded after it, what was obligated against it, and the records behind every figure.">
+<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="vendor/maplibre-gl.css">
+</head>
+<body>
+<a class="skip" href="#main-content">Skip to the event</a>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <a class="wordmark" href="index.html">NYC Hazard Historian</a>
+    <nav aria-label="Sections">
+      <a href="explore.html">Explore</a>
+      <a href="compare.html">Compare</a>
+      <a href="method.html">Method</a>
+      <a href="about.html">About</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main-content">
+  <p class="loading" id="loading">Loading the event.</p>
+
+  <div id="body" hidden>
+    <!-- The heading is replaced once the event loads. It is in the markup so
+         the page has a level-one heading before any script runs. -->
+    <div class="event-head" id="head"><h1>Event</h1></div>
+
+    <div class="with-rail">
+      <div>
+        <!-- The source's own account of the event, as the opening paragraph.
+             It is what a reader wants first and it is not this project's
+             writing, so it carries a citation and nothing else. -->
+        <div id="narrative"></div>
+
+        <section class="section" id="impact-section" aria-labelledby="impact-h">
+          <h2 id="impact-h">Measured</h2>
+          <div class="panels" id="impact"></div>
+        </section>
+
+        <section class="section" id="consequences-section" aria-labelledby="cons-h">
+          <h2 id="cons-h">Recorded after</h2>
+          <p class="val-note">City records counted over this event. The window
+          is not the same for every dataset, and each panel states its own.</p>
+          <div class="panels" id="consequences"></div>
+        </section>
+
+        <section class="section" id="tide-section" aria-labelledby="tide-h" hidden>
+          <h2 id="tide-h">Water level</h2>
+          <div class="panels" id="tide"></div>
+        </section>
+
+        <section class="section" id="assistance-section" aria-labelledby="aid-h">
+          <h2 id="aid-h">Federal assistance</h2>
+          <p class="val-note" id="assistance-scope"></p>
+          <div class="panels" id="assistance"></div>
+        </section>
+
+        <section class="section" id="radar-section" aria-labelledby="radar-h">
+          <h2 id="radar-h">Radar</h2>
+          <div id="radar"></div>
+        </section>
+
+        <section class="section" id="track-section" aria-labelledby="track-h" hidden>
+          <h2 id="track-h">Storm track</h2>
+          <div id="track"></div>
+        </section>
+
+        <section class="section" id="evidence-section" aria-labelledby="ev-h">
+          <h2 id="ev-h">Records</h2>
+          <div id="evidence"></div>
+          <div class="actions">
+            <button type="button" class="btn btn-quiet btn-small" id="copy">Copy link to this event</button>
+            <a class="btn btn-quiet btn-small" href="explore.html">Back to the explorer</a>
+          </div>
+        </section>
+      </div>
+
+      <nav class="rail" aria-label="On this page">
+        <p class="eyebrow">On this page</p>
+        <ol id="rail-list"></ol>
+      </nav>
+    </div>
+  </div>
+</main>
+
+<footer class="footer"><div class="footer-inner" id="foot"></div></footer>
+
+<script src="vendor/maplibre-gl.js"></script>
+<script src="js/format.js"></script>
+<script src="js/site.js"></script>
+<script src="js/event.js"></script>
+</body>
+</html>

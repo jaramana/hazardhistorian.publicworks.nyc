@@ -1,0 +1,683 @@
+/* NYC Hazard Historian (hazardhistorian.publicworks.nyc)
+   ------------------------------------------------------------------
+   One stylesheet, no build step, no webfonts.
+
+   The proportions and restraint follow The Pay Gap and Schools Finder, because
+   all three are the same kind of instrument.
+
+   What is different here is the reading posture. A visitor is nearly always
+   holding a query in their head while looking at a result, and often looking
+   for the thing that is not there. So the work goes into three places: keeping
+   the query visible, making the four kinds of absence legible beside a number,
+   and keeping the surfaces that take input optically distinct from the surfaces
+   that carry data.
+
+   That last one is the whole of the visual idea. Controls sit on a light,
+   slightly refractive layer that reads as glass over the page. Data sits flat
+   on paper, ruled, tabular, unornamented. Nothing blinks, nothing pulses, and
+   no element pretends to be live telemetry. It is the calm of a desk that is
+   being worked at, not the theatre of a situation room. */
+
+/* ---- Tokens ---------------------------------------------------- */
+
+:root {
+  /* Pay Gap is warm ivory and civic blue. Schools is cool paper and deep
+     green. This is cool slate and a deep storm blue: same restraint, its own
+     weather. */
+  --paper:        #f3f5f8;
+  --paper-raised: #ffffff;
+  --paper-sunken: #e8ecf1;
+  --ink:          #12161c;
+  --ink-soft:     #414852;
+  --ink-faint:    #5c636e;   /* 5.6:1 on paper, 5.1:1 on sunken */
+  --rule:         #d8dde4;
+  --rule-strong:  #b8c0ca;
+  --control:      #757e8a;   /* control edges need 3:1 */
+
+  --accent:       #1d4f77;   /* deep storm blue, 7.4:1 on the paper */
+  --on-accent:    #ffffff;
+  --accent-soft:  #e2ecf4;
+  --accent-ink:   #143a58;
+
+  --warn:         #8f4415;   /* questionable or flagged values */
+  --warn-soft:    #fbeade;
+  --absent:       #5f6672;   /* the colour of a stated absence */
+  --absent-soft:  #e9ecf0;
+
+  /* The refractive layer. Controls and chrome sit on it; data never does.
+     Kept close to opaque so that no text ever depends on what is behind it. */
+  --glass:        rgba(255, 255, 255, .82);
+  --glass-blur:   saturate(140%) blur(14px);
+  --glass-edge:   inset 0 1px 0 rgba(255, 255, 255, .9);
+
+  --shadow: 0 1px 2px rgba(16, 22, 32, .05), 0 10px 26px -16px rgba(16, 22, 32, .28);
+  --shadow-tight: 0 1px 2px rgba(16, 22, 32, .06);
+
+  --r:    4px;
+  --r-lg: 6px;
+
+  --measure: 36rem;
+  --wide:    78rem;
+
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+  /* Monospace carries records: an event id, a timestamp, a count, a dollar
+     figure. It is the signal that a thing is data and not prose, so it is used
+     for exactly that and nowhere else. */
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+          "Liberation Mono", monospace;
+}
+
+/* ---- Base ------------------------------------------------------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+/* Several elements here are given display:block by class and hidden by script.
+   Without this the attribute loses to the class and the element stays on the
+   page, which is how "No filters" once sat underneath two filters. */
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 16px/1.55 var(--sans);
+  font-feature-settings: "tnum" 1;
+}
+
+/* The heading scale is The Pay Gap's and Schools Finder's, so a reader moving
+   between the three sites is not asked to relearn what a title looks like. */
+h1, h2, h3, h4 { line-height: 1.15; letter-spacing: -.022em; font-weight: 700; margin: 0 0 .5rem; }
+h1 { font-size: clamp(1.9rem, 3.6vw, 2.6rem); letter-spacing: -.03em; }
+h2 { font-size: clamp(1.25rem, 2.2vw, 1.6rem); }
+h3 { font-size: 1.05rem; font-weight: 600; }
+h4 { font-size: .95rem; font-weight: 600; color: var(--ink-soft); }
+p  { margin: 0 0 1rem; }
+a  { color: var(--accent); text-underline-offset: .18em; }
+a:hover { color: var(--accent-ink); }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+.skip {
+  position: absolute; left: -9999px; top: 0; z-index: 100;
+  background: var(--accent); color: var(--on-accent);
+  padding: .6rem 1rem; border-radius: 0 0 var(--r) 0;
+}
+.skip:focus { left: 0; }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}
+
+/* The one repeated typographic device: a small ruled label. It names a
+   section, a grain, a footer column. Uppercase at this size stays legible and
+   keeps a heading and its metadata visibly different in kind. */
+.eyebrow {
+  display: block;
+  font: 500 .7rem/1.4 var(--sans);
+  text-transform: uppercase; letter-spacing: .11em;
+  color: var(--ink-faint);
+  margin: 0 0 .3rem;
+}
+
+/* ---- Shell ------------------------------------------------------ */
+
+.masthead {
+  position: sticky; top: 0; z-index: 30;
+  background: var(--glass);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border-bottom: 1px solid var(--rule);
+  box-shadow: var(--glass-edge);
+}
+/* Where the page cannot be blurred behind, the bar is simply opaque. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .masthead { background: var(--paper-raised); }
+}
+.masthead-inner {
+  max-width: var(--wide); margin: 0 auto; padding: .75rem 1.25rem;
+  display: flex; align-items: baseline; gap: 1.25rem; flex-wrap: wrap;
+}
+.wordmark {
+  font-weight: 600; font-size: 1rem; letter-spacing: -.012em;
+  color: var(--ink); text-decoration: none; white-space: nowrap;
+}
+.masthead nav { margin-left: auto; display: flex; gap: 1.1rem; flex-wrap: wrap; }
+.masthead nav a {
+  font-size: .89rem; color: var(--ink-soft); text-decoration: none;
+  padding: .2rem 0; border-bottom: 2px solid transparent;
+}
+.masthead nav a:hover { color: var(--ink); border-bottom-color: var(--rule-strong); }
+.masthead nav a[aria-current="page"] {
+  color: var(--ink); border-bottom-color: var(--accent);
+}
+
+main { max-width: var(--wide); margin: 0 auto; padding: 1.75rem 1.25rem 3rem; }
+main.narrow { max-width: 46rem; }
+
+/* ---- Footer -----------------------------------------------------
+   Columns and a closing colophon, the shape The Pay Gap and Schools Finder
+   both use. The links here are the navigation in the same words, so a reader
+   does not have to hold two maps of one site. */
+
+.footer {
+  border-top: 1px solid var(--rule);
+  background: var(--paper-raised);
+  color: var(--ink-faint);
+  font-size: .87rem;
+}
+.footer-inner { max-width: var(--wide); margin: 0 auto; padding: 2rem 1.25rem 3rem; }
+.footer a { color: var(--ink-soft); }
+.footer a:hover { color: var(--accent); }
+.footer p { max-width: 42rem; }
+/* Two short columns, set beside each other rather than stretched across the
+   page. A grid would give each of them half of seventy-eight rems and four
+   words to fill it with. */
+.footer-grid { display: flex; flex-wrap: wrap; gap: 1.5rem 4rem; }
+.footer-grid > div { min-width: 10rem; }
+.footer h2 {
+  font: 500 .7rem/1.4 var(--sans);
+  text-transform: uppercase; letter-spacing: .11em;
+  color: var(--ink-faint); margin: 0 0 .5rem;
+}
+.footer ul { list-style: none; padding: 0; margin: 0; }
+.footer li { margin-bottom: .28rem; }
+.footer .built { margin: 1.5rem 0 0; font-variant-numeric: tabular-nums; }
+.colophon { margin-top: .75rem; font-size: .83rem; }
+.colophon .wink { cursor: help; border-bottom: 1px dotted var(--rule-strong); }
+
+/* The standing caution. Schools Finder carries the same box in the same place,
+   for the same reason: an independent compilation should say what it is before
+   anyone acts on a figure in it. */
+.note-box {
+  border-left: 3px solid var(--rule-strong); background: var(--paper-sunken);
+  padding: .85rem 1.05rem; border-radius: 0 var(--r) var(--r) 0;
+  font-size: .89rem; color: var(--ink-soft); margin: 1.5rem 0; max-width: 46rem;
+}
+.note-box strong { color: var(--ink); }
+.note-box p { margin: 0; max-width: none; }
+
+/* ---- Prose ------------------------------------------------------ */
+
+.prose { max-width: var(--measure); }
+.prose h2 { margin-top: 2.2rem; }
+.prose h3 { margin-top: 1.6rem; }
+.prose ul, .prose ol { padding-left: 1.15rem; margin: 0 0 1rem; }
+.prose li { margin-bottom: .35rem; }
+.prose code {
+  font: 400 .85em var(--mono); background: var(--paper-sunken);
+  padding: .1em .35em; border-radius: 3px;
+}
+.lede { font-size: 1.06rem; color: var(--ink-soft); max-width: var(--measure); }
+
+/* ---- Controls --------------------------------------------------- */
+
+label, .label {
+  display: block; font-size: .82rem; font-weight: 500;
+  color: var(--ink-soft); margin-bottom: .25rem;
+}
+input[type="date"], input[type="text"], input[type="number"],
+input[type="search"], select {
+  font: inherit; font-size: .92rem; color: var(--ink);
+  background: var(--paper-raised);
+  border: 1px solid var(--control); border-radius: var(--r);
+  padding: .45rem .55rem; width: 100%; min-height: 2.5rem;
+  box-shadow: var(--shadow-tight);
+}
+input:disabled, select:disabled { background: var(--paper-sunken); color: var(--ink-faint); }
+/* A date input on a narrow phone overflows its column if it is allowed to keep
+   its intrinsic width. */
+input[type="date"] { min-width: 0; }
+
+.btn {
+  font: inherit; font-size: .89rem; font-weight: 500;
+  background: var(--accent); color: var(--on-accent);
+  border: 1px solid var(--accent); border-radius: var(--r);
+  padding: .5rem 1.05rem; cursor: pointer; min-height: 2.5rem;
+  display: inline-flex; align-items: center; justify-content: center; gap: .4rem;
+  text-decoration: none; white-space: nowrap;
+}
+.btn:hover { background: var(--accent-ink); border-color: var(--accent-ink); color: var(--on-accent); }
+.btn-quiet {
+  background: var(--paper-raised); color: var(--ink-soft);
+  border-color: var(--control); box-shadow: var(--shadow-tight);
+}
+.btn-quiet:hover { background: var(--paper-sunken); color: var(--ink); border-color: var(--rule-strong); }
+.btn-small { font-size: .83rem; padding: .35rem .7rem; min-height: 2.1rem; }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+
+/* A finger is not a mouse pointer. Anything tappable clears 44 pixels. */
+@media (pointer: coarse) {
+  .btn { min-height: 2.75rem; }
+  .btn-small { min-height: 2.5rem; padding: .5rem .8rem; }
+  input[type="checkbox"] { width: 1.15rem; height: 1.15rem; }
+}
+
+/* An action group and the thing it acts on are not the same object, and the
+   gap between them should say so. */
+.actions {
+  display: flex; gap: .55rem; align-items: center; flex-wrap: wrap;
+  margin: 1rem 0 1.75rem;
+}
+.actions .spacer { margin-left: auto; }
+
+/* ---- Query bar -------------------------------------------------- */
+/* The active query stays on screen. Every part of it is removable on its own,
+   which is what makes a query reversible one step at a time rather than only
+   resettable. */
+
+.query {
+  /* The refractive treatment is kept to the chrome: the sticky masthead and
+     the map controls, which sit over moving content. A blurred backdrop on a
+     panel this large is expensive to composite, and on a panel that never has
+     anything behind it there is nothing to refract. It gets the highlight and
+     the shadow, and no filter. */
+  background: var(--paper-raised);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-lg);
+  padding: 1rem 1.1rem;
+  box-shadow: var(--shadow), var(--glass-edge);
+  margin-bottom: 1.5rem;
+}
+.query-grid {
+  display: grid; gap: .75rem 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+}
+.query-actions {
+  display: flex; gap: .55rem; align-items: center; flex-wrap: wrap;
+  margin-top: 1rem; padding-top: .9rem; border-top: 1px solid var(--rule);
+}
+.query-actions .spacer { margin-left: auto; }
+
+.disclosure { margin-top: .9rem; }
+.disclosure > summary {
+  cursor: pointer; font-size: .88rem; color: var(--ink-soft);
+  padding: .3rem 0; list-style-position: outside;
+}
+.disclosure > summary:hover { color: var(--ink); }
+.disclosure[open] > summary { font-weight: 500; }
+
+.chips { display: flex; flex-wrap: wrap; gap: .4rem; margin: .9rem 0 0; padding: 0; list-style: none; }
+.chip {
+  display: inline-flex; align-items: center; gap: .35rem;
+  background: var(--accent-soft); color: var(--accent-ink);
+  border: 1px solid rgba(29, 79, 119, .18); border-radius: 999px;
+  padding: .2rem .3rem .2rem .7rem; font-size: .84rem; white-space: nowrap;
+}
+.chip b { font-weight: 600; }
+.chip button {
+  border: 0; background: transparent; color: inherit; cursor: pointer;
+  font: inherit; line-height: 1; padding: .25rem .4rem; border-radius: 999px;
+  min-width: 1.6rem; min-height: 1.6rem;
+}
+.chip button:hover { background: rgba(20, 58, 88, .12); }
+
+.filter-builder {
+  margin-top: .6rem; padding: .85rem; border: 1px solid var(--rule);
+  border-radius: var(--r); background: var(--paper-sunken);
+}
+.filter-row {
+  display: grid; gap: .6rem .7rem; align-items: end;
+  grid-template-columns: minmax(9rem, 1.5fr) minmax(7rem, .8fr) minmax(7rem, 1fr) auto;
+}
+.filter-values { display: flex; align-items: center; gap: .4rem; flex-wrap: wrap; }
+.filter-values > label { flex: 1 0 100%; margin: 0; }
+.filter-values > input { flex: 1 1 4.5rem; min-width: 4.5rem; }
+.filter-unit {
+  font: 400 .85rem var(--mono); color: var(--ink-faint); white-space: nowrap;
+}
+/* The chosen characteristic explains how its number was produced. A threshold
+   is only meaningful against a stated method. */
+.filter-note { margin: .6rem 0 0; }
+
+/* ---- Results ---------------------------------------------------- */
+
+.result-head {
+  display: flex; align-items: baseline; gap: 1rem; flex-wrap: wrap;
+  margin: 0 0 .7rem;
+}
+.count { font-weight: 600; font-variant-numeric: tabular-nums; }
+.count span { font-weight: 400; color: var(--ink-faint); }
+
+/* A horizontally scrolling region is a keyboard trap if it cannot be focused
+   and an invisible one if nothing marks its edge. The shadow appears only when
+   there is more table to the right, using a local background attachment. */
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--rule); border-radius: var(--r-lg);
+  background:
+    linear-gradient(to right, var(--paper-raised) 30%, rgba(255,255,255,0)),
+    linear-gradient(to right, rgba(255,255,255,0), var(--paper-raised) 70%) 100% 0,
+    radial-gradient(farthest-side at 0 50%, rgba(16,22,32,.14), rgba(0,0,0,0)),
+    radial-gradient(farthest-side at 100% 50%, rgba(16,22,32,.14), rgba(0,0,0,0)) 100% 0;
+  background-repeat: no-repeat;
+  background-size: 3rem 100%, 3rem 100%, 1rem 100%, 1rem 100%;
+  background-attachment: local, local, scroll, scroll;
+  background-color: var(--paper-raised);
+}
+.table-wrap:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.scroll-hint {
+  font-size: .78rem; color: var(--ink-faint); margin: .4rem 0 0;
+}
+
+table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+caption { text-align: left; padding: .6rem .8rem; color: var(--ink-faint); font-size: .82rem; }
+th, td { text-align: left; padding: .48rem .6rem; border-bottom: 1px solid var(--rule); vertical-align: top; }
+thead th {
+  position: sticky; top: 0; z-index: 2;
+  background: var(--paper-sunken); color: var(--ink-soft);
+  font-size: .72rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: .07em; white-space: nowrap;
+  border-bottom: 1px solid var(--rule-strong);
+}
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:hover { background: var(--paper-sunken); }
+td.num, th.num { text-align: right; font-family: var(--mono); font-size: .85rem; white-space: nowrap; }
+th.num { text-align: right; }
+
+th button.sort {
+  font: inherit; text-transform: inherit; letter-spacing: inherit;
+  color: inherit; background: none; border: 0; padding: .1rem 0; cursor: pointer;
+  display: inline-flex; align-items: center; gap: .3rem;
+}
+th button.sort:hover { color: var(--ink); }
+th[aria-sort] button.sort { color: var(--accent); }
+th button.sort .arrow { font-size: .7em; }
+
+/* The event name is the column a reader scans. Left to itself it wraps to one
+   word a line between two wide neighbours. */
+td[data-label="Event"] { min-width: 12rem; }
+td[data-label="Places"] { min-width: 8rem; }
+.event-link { font-weight: 500; text-decoration: none; }
+.event-link:hover { text-decoration: underline; }
+.event-date {
+  font-family: var(--mono); font-size: .8rem; color: var(--ink-faint);
+  white-space: nowrap;
+}
+/* A date range is the one string that will not fit a 320 pixel screen. It is
+   allowed to break there, and nowhere else. */
+@media (max-width: 30rem) {
+  .event-date { white-space: normal; }
+}
+
+/* ---- Hazard chips -----------------------------------------------
+   The hazard names are the normalised values the pipeline publishes. There is
+   no colour coding, because the groups a colour coding would need are not in
+   any source: they were a presentation invention and have been removed. */
+
+.hz { display: inline-flex; flex-wrap: wrap; gap: .25rem; }
+.hz-tag {
+  font-size: .74rem; padding: .1rem .45rem .1rem .4rem; border-radius: 3px;
+  background: var(--paper-sunken); color: var(--ink-soft);
+  border-left: 2px solid var(--rule-strong); white-space: nowrap;
+}
+
+/* ---- Values and their absence ----------------------------------- */
+/* The one thing this site must never do is print a zero for something nobody
+   measured. An absent value is written out in words, in its own colour, at the
+   same size as a number would have been. */
+
+.val { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.val-absent {
+  font-family: var(--sans); font-size: .82rem; font-style: normal;
+  color: var(--absent); background: var(--absent-soft);
+  padding: .05rem .35rem; border-radius: 3px; white-space: nowrap;
+}
+.val-absent[data-status="na"] { border-left: 2px solid var(--rule-strong); }
+.val-absent[data-status="suppressed"],
+.val-absent[data-status="censored"] { color: var(--warn); background: var(--warn-soft); }
+.val-note { display: block; font-size: .76rem; color: var(--ink-faint); font-family: var(--sans); line-height: 1.4; }
+
+.flag {
+  display: inline-block; font-size: .74rem; color: var(--warn);
+  background: var(--warn-soft); border-radius: 3px; padding: .05rem .35rem;
+}
+
+/* ---- Panels ----------------------------------------------------- */
+
+.panels { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); }
+.panel {
+  background: var(--paper-raised); border: 1px solid var(--rule);
+  border-radius: var(--r-lg); padding: .95rem 1.05rem;
+  box-shadow: var(--shadow-tight);
+}
+.panel > h3 { margin-bottom: .6rem; }
+.panel-wide { grid-column: 1 / -1; }
+
+.stat { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; padding: .36rem 0; border-bottom: 1px solid var(--rule); }
+.stat:last-child { border-bottom: 0; }
+.stat dt { color: var(--ink-soft); font-size: .87rem; }
+.stat dd { margin: 0; text-align: right; }
+.stat .big { font-size: 1.15rem; font-weight: 600; }
+
+/* The grain line. What one row of the source actually is, printed under the
+   numbers it produced, because a complaint, a station reading, a claim and a
+   declaration are four different units of observation and the panels sit side
+   by side. */
+/* What one row of the source is, and who published it. No label: the line
+   sits under the numbers it produced, in the position a caption occupies. */
+.grain {
+  font-size: .74rem; color: var(--ink-faint); margin: .7rem 0 0;
+  padding-top: .5rem; border-top: 1px solid var(--rule);
+}
+.source-line {
+  font-size: .75rem; color: var(--ink-faint); margin-top: .35rem;
+}
+.source-line a { color: var(--ink-faint); }
+
+/* ---- Metric strip ------------------------------------------------
+   Five facts about the collection, in one ruled band. It is the closest this
+   design comes to a dashboard, and it is deliberately static text. */
+
+.strip {
+  display: grid; gap: 0;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  border: 1px solid var(--rule); border-radius: var(--r-lg);
+  background: var(--paper-raised); overflow: hidden;
+  box-shadow: var(--shadow-tight);
+}
+.strip > div {
+  padding: .7rem .9rem; border-right: 1px solid var(--rule);
+}
+.strip > div:last-child { border-right: 0; }
+.strip .metric {
+  display: block; font: 600 1.15rem/1.2 var(--mono);
+  font-variant-numeric: tabular-nums; color: var(--ink);
+}
+.strip .metric-label {
+  display: block; font-size: .75rem; color: var(--ink-faint); margin-top: .15rem;
+}
+
+/* ---- Event page ------------------------------------------------- */
+
+.event-head { margin-bottom: 1.25rem; }
+.event-head .back { font-size: .85rem; display: inline-block; margin-bottom: .5rem; }
+.event-meta {
+  display: flex; gap: .5rem 1.1rem; flex-wrap: wrap; align-items: center;
+  color: var(--ink-soft); font-size: .88rem; margin-top: .5rem;
+}
+/* The source's account, opening the page. Set slightly larger than the panels
+   beneath it and across the full width of the column, because it is the first
+   thing read and the last thing that should feel like a footnote. */
+.narrative { margin: 0 0 1.5rem; font-size: 1.02rem; color: var(--ink-soft); }
+.narrative p:last-of-type { margin-bottom: 0; }
+.attribution { font-size: .78rem; color: var(--ink-faint); margin-top: .75rem; }
+.narrative .attribution { margin-bottom: 0; }
+
+/* Sections are ruled rather than boxed. A rule with a label sitting on it
+   reads as an instrument panel; another row of cards reads as a dashboard. */
+.section { margin-top: 2rem; padding-top: 1.1rem; border-top: 1px solid var(--rule); }
+.section > h2 { display: flex; align-items: baseline; gap: .6rem; flex-wrap: wrap; }
+.section > h2 .hint { font-size: .8rem; font-weight: 400; color: var(--ink-faint); }
+.section > .val-note { max-width: 46rem; }
+.section > .val-note:first-of-type { margin-bottom: .8rem; }
+
+.map { height: 420px; border-radius: var(--r-lg); border: 1px solid var(--rule); background: var(--paper-sunken); overflow: hidden; }
+.map-small { height: 300px; }
+.map:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.map-controls {
+  display: flex; align-items: center; gap: .75rem; flex-wrap: wrap;
+  margin: .7rem 0; padding: .6rem .7rem;
+  background: var(--glass); border: 1px solid var(--rule); border-radius: var(--r);
+  -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-edge);
+}
+.map-controls input[type="range"] { flex: 1 1 12rem; min-width: 8rem; }
+.map-time { font-family: var(--mono); font-size: .84rem; white-space: nowrap; }
+
+.chart { width: 100%; height: 210px; display: block; }
+.chart text { font-family: var(--sans); }
+.chart-legend { display: flex; gap: 1rem; flex-wrap: wrap; font-size: .8rem; color: var(--ink-soft); margin-top: .4rem; }
+.chart-legend i { display: inline-block; width: .75rem; height: .75rem; border-radius: 2px; margin-right: .3rem; vertical-align: -1px; }
+.chart-readout {
+  font-family: var(--mono); font-size: .82rem; color: var(--ink-soft);
+  min-height: 1.3rem; margin: .2rem 0 0;
+}
+
+/* ---- Compare ---------------------------------------------------- */
+
+.compare-wrap { overflow-x: auto; }
+.compare th:first-child, .compare td:first-child {
+  position: sticky; left: 0; background: var(--paper-raised); z-index: 1;
+  border-right: 1px solid var(--rule); min-width: 11rem;
+}
+.compare thead th { background: var(--paper-sunken); vertical-align: bottom; }
+.compare thead th:first-child { z-index: 3; }
+.compare thead th:not(:first-child) { min-width: 9.5rem; white-space: normal; text-transform: none; letter-spacing: 0; font-size: .85rem; }
+.compare tbody th { font-weight: 500; color: var(--ink-soft); font-size: .85rem; }
+.compare td { text-align: right; font-family: var(--mono); font-size: .85rem; }
+.compare tr.group th {
+  background: var(--paper-sunken); font: 500 .7rem/1.4 var(--sans);
+  text-transform: uppercase; letter-spacing: .11em; color: var(--ink-faint);
+  position: sticky; left: 0;
+}
+
+/* ---- States ----------------------------------------------------- */
+
+.empty {
+  border: 1px solid var(--rule-strong); border-radius: var(--r-lg);
+  padding: 1.6rem 1.25rem; color: var(--ink-soft);
+  background: var(--paper-raised);
+}
+.empty h3 { color: var(--ink); }
+.empty p { max-width: var(--measure); }
+.empty .suggestions { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: 1rem; }
+.empty-centred { text-align: center; }
+.empty-centred p { margin-left: auto; margin-right: auto; }
+.empty-centred .suggestions { justify-content: center; }
+
+.loading { color: var(--ink-faint); font-size: .9rem; padding: 1.25rem 0; }
+.error {
+  border-left: 3px solid var(--warn); background: var(--warn-soft);
+  padding: .9rem 1.1rem; border-radius: 0 var(--r) var(--r) 0; color: var(--ink);
+}
+.error h3 { margin-top: 0; }
+
+.notice {
+  background: var(--accent-soft); border-left: 3px solid var(--accent);
+  border-radius: 0 var(--r) var(--r) 0; padding: .65rem .9rem;
+  font-size: .86rem; color: var(--accent-ink); margin-bottom: .75rem;
+  max-width: 46rem;
+}
+.notice a { color: var(--accent-ink); }
+
+/* ---- Pagination ------------------------------------------------- */
+
+.pager { display: flex; gap: .5rem; align-items: center; justify-content: center; margin-top: 1.1rem; flex-wrap: wrap; }
+.pager .page-info { font-size: .85rem; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+
+/* ---- Home ------------------------------------------------------- */
+
+.hero { padding: .25rem 0 1.5rem; }
+.hero h1 { max-width: 22ch; }
+.hero .lede { margin-top: .6rem; }
+.jump { display: grid; gap: .7rem; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); margin-top: 1.5rem; }
+.jump a {
+  display: block; text-decoration: none; color: inherit;
+  background: var(--paper-raised); border: 1px solid var(--rule);
+  border-radius: var(--r-lg); padding: .8rem .95rem;
+  box-shadow: var(--shadow-tight), var(--glass-edge);
+}
+.jump a:hover { border-color: var(--accent); background: var(--paper-raised); }
+.jump .k { display: block; font-weight: 600; margin-bottom: .15rem; }
+.jump .d { font-size: .83rem; color: var(--ink-faint); }
+
+.coverage-note { font-size: .83rem; color: var(--ink-faint); margin-top: 1.5rem; }
+
+/* ---- Narrow screens --------------------------------------------- */
+
+@media (max-width: 46rem) {
+  main { padding: 1.25rem .9rem 2.5rem; }
+  .filter-row { grid-template-columns: 1fr 1fr; }
+  .filter-row > *:nth-last-child(2) { grid-column: 1 / -1; }
+  .filter-row > *:last-child { grid-column: 1 / -1; }
+  .masthead-inner { padding: .6rem .9rem; }
+  .masthead nav { width: 100%; margin-left: 0; gap: .9rem; }
+  .strip > div { border-right: 0; border-bottom: 1px solid var(--rule); }
+  .strip > div:last-child { border-bottom: 0; }
+
+  /* The result table becomes a list of records. A wide table that scrolls
+     sideways on a phone hides the column that tells you what a number is. */
+  .stack thead { display: none; }
+  .stack tbody tr { display: block; border-bottom: 1px solid var(--rule); padding: .7rem .2rem; }
+  .stack tbody tr:last-child { border-bottom: 0; }
+  .stack tbody td { display: flex; justify-content: space-between; gap: 1rem; border: 0; padding: .18rem .5rem; text-align: right; }
+  .stack tbody td::before {
+    content: attr(data-label); color: var(--ink-faint); font-size: .8rem;
+    text-align: left; font-family: var(--sans); flex: 0 0 auto;
+  }
+  .stack tbody td.primary { display: block; text-align: left; padding-bottom: .35rem; }
+  .stack tbody td.primary::before { content: none; }
+  /* The stacked table no longer scrolls, so it must not advertise that it does. */
+  .stack-wrap { background-image: none; }
+}
+
+@media (min-width: 60rem) {
+  .with-rail { display: grid; grid-template-columns: minmax(0, 1fr) 14rem; gap: 2.5rem; align-items: start; }
+  .rail { position: sticky; top: 4.5rem; font-size: .85rem; }
+  .rail ol { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--rule); }
+  .rail li a {
+    display: block; padding: .3rem .75rem; color: var(--ink-soft);
+    text-decoration: none; border-left: 2px solid transparent; margin-left: -1px;
+  }
+  .rail li a:hover { color: var(--ink); }
+  .rail li a[aria-current="true"] { color: var(--accent); border-left-color: var(--accent); }
+}
+
+/* At 200 per cent zoom a narrow window is what a reader has, and the sticky
+   masthead is most of it. It stops sticking. */
+@media (max-height: 34rem) {
+  .masthead { position: static; }
+  .rail { position: static; }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --rule: #9aa3ae; --rule-strong: #6d7683; --ink-faint: #444b55;
+    --glass: #ffffff;
+  }
+  .hz-tag, .val-absent { border: 1px solid var(--rule-strong); }
+}
+
+@media print {
+  .masthead nav, .query, .pager, .map-controls, .actions, .rail { display: none; }
+  .masthead { position: static; }
+  body { background: #fff; }
+  .panel, .table-wrap { border-color: #999; box-shadow: none; background: #fff; }
+  .section { break-inside: avoid; }
+  details { display: block; }
+  details > summary { display: none; }
+}

@@ -1,0 +1,11 @@
+data-raw/
+build/
+.DS_Store
+__pycache__/
+*.pyc
+.venv/
+
+# Working notes and design references, kept local
+Mockups/
+nyc-hazard-historian-claude-brief.md
+working-with-claude_jaramana_2026-08-08.md

@@ -1,0 +1,234 @@
+/* Data flow page.
+   ------------------------------------------------------------------
+   Layers on site.css and borrows all of its tokens. The one idea here is the
+   band: a labelled region of the flow, with a connector between bands, so the
+   direction of travel is legible before a word is read. */
+
+.df-toolbar {
+  display: flex; flex-wrap: wrap; align-items: flex-end;
+  gap: 1rem; justify-content: space-between;
+  margin: 1.5rem 0 1.75rem;
+  padding-bottom: 1rem; border-bottom: 1px solid var(--rule);
+}
+.df-stats { display: flex; flex-wrap: wrap; gap: 1.75rem; margin: 0; }
+.df-stats > div { margin: 0; }
+.df-stats dt {
+  font-size: .76rem; font-weight: 500; letter-spacing: .04em;
+  text-transform: uppercase; color: var(--ink-faint); margin-bottom: .15rem;
+}
+.df-stats dd {
+  margin: 0; font: 500 1.35rem/1.1 var(--mono); color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.df-stats.is-absent dd { font-size: .95rem; color: var(--absent); }
+.df-actions { display: flex; gap: .5rem; }
+
+/* ---- Bands ------------------------------------------------------- */
+
+.df-band {
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--band, var(--rule-strong));
+  border-radius: 8px;
+  background: var(--paper-raised);
+  padding: 1.15rem 1.25rem 1.35rem;
+}
+.df-band-source   { --band: var(--g-water); }
+.df-band-pipeline { --band: var(--g-temp); }
+.df-band-output   { --band: var(--accent); }
+.df-band-site     { --band: var(--g-winter); }
+
+.df-band-title {
+  margin: 0 0 .25rem; font-size: .8rem; font-weight: 600;
+  letter-spacing: .07em; text-transform: uppercase; color: var(--band);
+}
+.df-band-pipeline .df-band-title { font-family: var(--mono); text-transform: none; letter-spacing: 0; font-size: .9rem; }
+.df-band-note {
+  margin: 0 0 1rem; max-width: var(--measure);
+  font-size: .9rem; color: var(--ink-soft);
+}
+
+/* The connector between bands. Decorative, and marked as such in the markup. */
+.df-flow {
+  display: flex; flex-direction: column; align-items: center;
+  gap: .3rem; padding: .55rem 0;
+}
+.df-flow-line {
+  width: 1px; height: 1.5rem; background: var(--rule-strong); position: relative;
+}
+.df-flow-line::after {
+  content: ''; position: absolute; bottom: -1px; left: 50%;
+  transform: translateX(-50%);
+  border-left: 4px solid transparent; border-right: 4px solid transparent;
+  border-top: 6px solid var(--rule-strong);
+}
+.df-flow-label {
+  font-size: .76rem; color: var(--ink-faint); font-style: italic;
+}
+
+/* ---- Cards ------------------------------------------------------- */
+
+.df-grid { list-style: none; margin: 0; padding: 0; display: grid; gap: .7rem; }
+.df-grid-sources { grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); }
+.df-grid-outputs { grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
+.df-grid-site    { grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); }
+
+.df-card {
+  border: 1px solid var(--rule); border-radius: 6px;
+  background: var(--paper); padding: .7rem .8rem .75rem;
+}
+.df-card.is-bypass {
+  border-style: dashed; border-color: var(--control);
+  background: var(--absent-soft);
+}
+.df-card-name { margin: 0 0 .2rem; font-weight: 600; font-size: .95rem; color: var(--ink); }
+.df-card-name a { text-decoration: none; }
+.df-card-name a:hover { text-decoration: underline; }
+.df-card-name.df-mono { font-family: var(--mono); font-size: .85rem; font-weight: 500; }
+.df-card-grain {
+  margin: 0 0 .35rem; font-size: .78rem; color: var(--ink-faint);
+  font-family: var(--mono);
+}
+.df-card-desc { margin: 0; font-size: .86rem; color: var(--ink-soft); }
+.df-card-span {
+  margin: .4rem 0 0; padding-top: .35rem; border-top: 1px dotted var(--rule);
+  font-size: .78rem; color: var(--ink-faint);
+}
+.df-tag {
+  margin: .45rem 0 0; display: inline-block;
+  font-size: .72rem; letter-spacing: .03em; text-transform: uppercase;
+  color: var(--absent); background: var(--paper-raised);
+  border: 1px solid var(--rule-strong); border-radius: 999px;
+  padding: .1rem .5rem;
+}
+
+/* ---- The config strip -------------------------------------------- */
+
+.df-config {
+  border: 1px dashed var(--g-temp); border-radius: 6px;
+  background: var(--warn-soft);
+  padding: .7rem .85rem; margin-bottom: .35rem;
+}
+.df-config-name { margin: 0 0 .2rem; font: 600 .9rem var(--mono); color: var(--warn); }
+.df-config-desc { margin: 0; font-size: .86rem; color: var(--ink-soft); max-width: var(--measure); }
+.df-config-tick {
+  margin: .5rem 0 0; font-size: .76rem; font-style: italic; color: var(--warn);
+}
+
+/* ---- Stages ------------------------------------------------------ */
+
+.df-stages { list-style: none; margin: 0; padding: 0; display: grid; gap: .55rem; }
+.df-stage { position: relative; padding-left: 1.1rem; }
+/* The spine that makes five separate boxes read as one ordered pipeline. */
+.df-stage::before {
+  content: ''; position: absolute; left: .3rem; top: 0; bottom: -.55rem;
+  width: 1px; background: var(--rule-strong);
+}
+.df-stage:last-child::before { bottom: 50%; }
+.df-stage::after {
+  content: ''; position: absolute; left: 0; top: 1.45rem;
+  width: .62rem; height: .62rem; border-radius: 50%;
+  background: var(--paper-raised); border: 2px solid var(--g-temp);
+}
+
+.df-details {
+  border: 1px solid var(--rule); border-radius: 6px;
+  background: var(--paper);
+}
+.df-details[open] { background: var(--paper-raised); border-color: var(--rule-strong); box-shadow: var(--shadow); }
+
+.df-summary {
+  display: grid; gap: .3rem;
+  padding: .8rem .9rem; cursor: pointer; list-style: none;
+  border-radius: 6px;
+}
+.df-summary::-webkit-details-marker { display: none; }
+.df-summary:hover { background: var(--paper-sunken); }
+.df-summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.df-stage-head { display: flex; align-items: baseline; gap: .5rem; }
+.df-stage-id {
+  font: 500 .78rem var(--mono); color: var(--on-accent);
+  background: var(--g-temp); border-radius: 3px; padding: .05rem .35rem;
+}
+.df-stage-name { font: 600 1rem var(--mono); color: var(--ink); }
+.df-stage-summary { font-size: .9rem; color: var(--ink-soft); max-width: var(--measure); }
+.df-stage-rule {
+  font-size: .84rem; font-style: italic; color: var(--warn);
+  max-width: var(--measure);
+}
+.df-more {
+  justify-self: start; margin-top: .15rem;
+  font-size: .78rem; font-weight: 500; color: var(--accent);
+}
+.df-more::after { content: 'What this stage does ▸'; }
+.df-details[open] .df-more::after { content: 'Close ▾'; }
+.df-details[open] .df-more { color: var(--ink-faint); }
+
+.df-stage-body {
+  padding: 0 .9rem 1rem;
+  border-top: 1px solid var(--rule);
+  margin: 0 .9rem; padding-left: 0; padding-right: 0;
+}
+
+.df-note { margin-top: .9rem; max-width: var(--measure); }
+.df-note h4 { margin: 0 0 .2rem; font-size: .88rem; font-weight: 600; color: var(--ink); }
+.df-note p  { margin: 0; font-size: .89rem; color: var(--ink-soft); }
+
+/* ---- The canonical-tables table ---------------------------------- */
+
+.df-table { width: 100%; border-collapse: collapse; margin-top: .9rem; font-size: .86rem; }
+.df-table caption {
+  text-align: left; font-size: .78rem; color: var(--ink-faint);
+  padding-bottom: .35rem;
+}
+.df-table th, .df-table td {
+  text-align: left; padding: .35rem .5rem .35rem 0;
+  border-bottom: 1px solid var(--rule); vertical-align: top;
+}
+.df-table thead th { font-size: .76rem; text-transform: uppercase; letter-spacing: .04em; color: var(--ink-faint); }
+.df-table tbody th { font-family: var(--mono); font-weight: 500; color: var(--ink); white-space: nowrap; padding-right: 1rem; }
+.df-table td { color: var(--ink-soft); }
+
+/* ---- Sub-mechanisms (the 311 drill-down) ------------------------- */
+
+.df-subs { margin-top: 1.15rem; }
+.df-subs-title {
+  margin: 0 0 .6rem; font-size: .78rem; font-weight: 600;
+  letter-spacing: .05em; text-transform: uppercase; color: var(--ink-faint);
+}
+.df-sub {
+  border: 1px solid var(--rule); border-left: 3px solid var(--accent);
+  border-radius: 5px; background: var(--paper-sunken);
+  padding: .7rem .85rem; margin-bottom: .55rem;
+}
+.df-sub h5 { margin: 0 0 .15rem; font-size: .92rem; font-weight: 600; color: var(--ink); }
+.df-sub-note { margin: 0 0 .55rem; font-size: .82rem; font-style: italic; color: var(--ink-faint); }
+.df-steps { margin: 0; padding-left: 1.15rem; display: grid; gap: .35rem; }
+.df-steps li { font-size: .86rem; color: var(--ink-soft); }
+.df-steps b { color: var(--ink); font-weight: 600; }
+
+/* ---- Invariants and footer --------------------------------------- */
+
+.df-invariants {
+  list-style: none; margin: 1rem 0 0; padding: .8rem .9rem;
+  border: 1px solid var(--rule); border-radius: 6px;
+  background: var(--accent-soft);
+  display: grid; gap: .4rem;
+}
+.df-invariants li { font-size: .86rem; color: var(--accent-ink); }
+.df-invariants code {
+  font: 400 .82em var(--mono); background: var(--paper-raised);
+  padding: .05em .3em; border-radius: 3px;
+}
+
+.df-foot {
+  margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--rule);
+  font-size: .82rem; color: var(--ink-faint); max-width: var(--measure);
+}
+.df-foot code { font-family: var(--mono); font-size: .92em; }
+
+@media (max-width: 34rem) {
+  .df-stats { gap: 1.1rem; }
+  .df-stats dd { font-size: 1.1rem; }
+  .df-stage { padding-left: .9rem; }
+}

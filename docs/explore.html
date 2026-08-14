@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Explore events | NYC Hazard Historian</title>
+<meta name="description" content="Filter New York City hazard events by date, hazard, borough and measurable thresholds. Every query is a link you can share.">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+<a class="skip" href="#main-content">Skip to the results</a>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <a class="wordmark" href="index.html">NYC Hazard Historian</a>
+    <nav aria-label="Sections">
+      <a href="explore.html">Explore</a>
+      <a href="compare.html">Compare</a>
+      <a href="method.html">Method</a>
+      <a href="about.html">About</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main-content">
+  <h1>Explore events</h1>
+  <p class="lede">The whole query lives in the address bar, so any result set on
+  this page is a link.</p>
+
+  <form class="query" id="query-form" aria-labelledby="query-heading">
+    <h2 class="visually-hidden" id="query-heading">Query</h2>
+
+    <div class="query-grid">
+      <div>
+        <label for="from">From</label>
+        <input type="date" id="from" name="from">
+      </div>
+      <div>
+        <label for="to">To</label>
+        <input type="date" id="to" name="to">
+      </div>
+      <div>
+        <label for="q">Name or hazard contains</label>
+        <input type="search" id="q" name="q" placeholder="Sandy, snow, coastal">
+      </div>
+    </div>
+
+    <details class="disclosure" id="facets-disclosure">
+      <summary>Hazards and places</summary>
+      <div class="query-grid" style="margin-top:.75rem">
+        <fieldset style="border:0; padding:0; margin:0; grid-column: span 2">
+          <legend class="label">Hazards, with the number of events holding each</legend>
+          <div id="hz-list" class="query-grid" style="gap:.35rem 1rem"></div>
+        </fieldset>
+        <fieldset style="border:0; padding:0; margin:0">
+          <legend class="label">Places named in the record</legend>
+          <div id="boro-list"></div>
+        </fieldset>
+      </div>
+    </details>
+
+    <details class="disclosure" open>
+      <summary>Threshold on a measure</summary>
+      <div class="filter-builder" id="builder"></div>
+      <p class="val-note filter-note" id="char-note"></p>
+      <p class="val-note">An event with no value for a measure is never matched
+      by a threshold on it. An absence is not a low number.</p>
+    </details>
+
+    <ul class="chips" id="chips" tabindex="-1" aria-label="Active filters"></ul>
+    <p class="val-note" id="chips-empty">No filters. Every event in the record is listed.</p>
+
+    <div class="query-actions">
+      <button type="button" class="btn btn-quiet btn-small" id="clear">Clear the query</button>
+      <button type="button" class="btn btn-quiet btn-small" id="copy">Copy link to this query</button>
+      <button type="button" class="btn btn-quiet btn-small" id="download">Download these results</button>
+    </div>
+  </form>
+
+  <div class="result-head">
+    <h2 class="count" id="count">Loading</h2>
+  </div>
+  <div class="actions" id="compare-bar" hidden></div>
+
+  <p class="loading" id="loading">Loading the event index.</p>
+  <div id="results"></div>
+</main>
+
+<footer class="footer"><div class="footer-inner" id="foot"></div></footer>
+
+<script src="js/format.js"></script>
+<script src="js/site.js"></script>
+<script src="js/explore.js"></script>
+</body>
+</html>

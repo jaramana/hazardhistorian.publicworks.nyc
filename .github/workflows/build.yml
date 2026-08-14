@@ -1,0 +1,80 @@
+# Rebuild the site from the sources.
+#
+# This runs on demand rather than on a schedule. The historical record does not
+# change often enough to justify a nightly build, and the brief this project was
+# written to does not ask for automatic ingestion of new events. What it does
+# ask for is that a refresh stays possible, which is what this is.
+#
+# Nothing is published unless validation passes, because the export stage
+# refuses to run otherwise.
+
+name: Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      force_fetch:
+        description: "Download every source again instead of using the cache"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # The pipeline uses the standard library only, so there is nothing to
+      # install. The cache is for the downloads, which are the slow part.
+      - name: Restore the source cache
+        uses: actions/cache@v4
+        with:
+          path: data-raw
+          key: sources-${{ github.run_id }}
+          restore-keys: sources-
+
+      - name: Build
+        run: |
+          python3 run.py ${{ inputs.force_fetch && '--force-fetch' || '' }}
+
+      - name: Show what the build flagged
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, pathlib
+          p = pathlib.Path("build/validation.json")
+          if not p.exists():
+              print("No validation report was written.")
+              raise SystemExit
+          r = json.loads(p.read_text())
+          print(f"{r['events']} events, {r['rows']} rows")
+          for name, detail in r["warnings"]:
+              print(f"warning  {name}: {detail}")
+          for name, detail in r["failures"]:
+              print(f"FAIL     {name}: {detail}")
+          PY
+
+      - name: Check the markup
+        run: python3 tools/check_accessibility.py
+
+      # Commit only when the published files actually changed, so the repository
+      # does not fill with empty commits against a record that rarely moves.
+      - name: Publish
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/data docs/downloads
+          if git diff --cached --quiet; then
+            echo "Nothing changed."
+          else
+            git commit -m "Rebuild data from sources"
+            git push
+          fi
