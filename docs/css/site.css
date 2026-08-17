@@ -56,8 +56,8 @@
   --r:    4px;
   --r-lg: 6px;
 
-  --measure: 36rem;
-  --wide:    78rem;
+  --measure: 34rem;
+  --wide:    72rem;
 
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto,
           "Helvetica Neue", Arial, sans-serif;
@@ -89,7 +89,10 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font: 400 16px/1.55 var(--sans);
+  /* 1.0625rem/1.6 is the suite's reading setting, shared with The Pay Gap and
+     Schools Finder. It is what makes the masthead render at the one height
+     the publicworks.nyc README records. */
+  font: 400 1.0625rem/1.6 var(--sans);
   font-feature-settings: "tnum" 1;
 }
 
@@ -135,35 +138,36 @@ a:hover { color: var(--accent-ink); }
 
 /* ---- Shell ------------------------------------------------------ */
 
-.masthead {
-  position: sticky; top: 0; z-index: 30;
-  background: var(--glass);
-  -webkit-backdrop-filter: var(--glass-blur);
-  backdrop-filter: var(--glass-blur);
-  border-bottom: 1px solid var(--rule);
-  box-shadow: var(--glass-edge);
-}
-/* Where the page cannot be blurred behind, the bar is simply opaque. */
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .masthead { background: var(--paper-raised); }
-}
+/* The centred column every band of the page sits in. */
+.wrap { width: min(100% - 2.5rem, var(--wide)); margin-inline: auto; }
+
+/* The masthead is shared across every project filed under publicworks.nyc, so
+   moving between them does not feel like moving between strangers. The
+   measurements below are written down in the publicworks.nyc README and only
+   --accent is allowed to differ. Do not retune them on one site alone.
+
+   It does not scroll with the page. A sticky header costs vertical space on a
+   phone permanently, to save a scroll gesture that is cheap, and these are
+   reading and reference sites rather than applications. */
+
+.masthead { border-bottom: 1px solid var(--rule); background: var(--paper); }
 .masthead-inner {
-  max-width: var(--wide); margin: 0 auto; padding: .75rem 1.25rem;
-  display: flex; align-items: baseline; gap: 1.25rem; flex-wrap: wrap;
+  display: flex; align-items: center; gap: 1.25rem;
+  padding: .55rem 0; flex-wrap: wrap;
 }
 .wordmark {
-  font-weight: 600; font-size: 1rem; letter-spacing: -.012em;
+  font-weight: 700; letter-spacing: -.03em; font-size: 1.25rem;
   color: var(--ink); text-decoration: none; white-space: nowrap;
 }
-.masthead nav { margin-left: auto; display: flex; gap: 1.1rem; flex-wrap: wrap; }
-.masthead nav a {
-  font-size: .89rem; color: var(--ink-soft); text-decoration: none;
-  padding: .2rem 0; border-bottom: 2px solid transparent;
+
+.nav { display: flex; gap: .15rem; flex-wrap: wrap; margin-left: auto; align-items: center; }
+.nav a {
+  color: var(--ink-soft); text-decoration: none;
+  padding: .35rem .6rem; border-radius: 6px;
+  font-size: .9rem; font-weight: 500; white-space: nowrap;
 }
-.masthead nav a:hover { color: var(--ink); border-bottom-color: var(--rule-strong); }
-.masthead nav a[aria-current="page"] {
-  color: var(--ink); border-bottom-color: var(--accent);
-}
+.nav a:hover { background: var(--paper-sunken); color: var(--ink); }
+.nav a[aria-current="page"] { color: var(--accent); background: var(--accent-soft); }
 
 main { max-width: var(--wide); margin: 0 auto; padding: 1.75rem 1.25rem 3rem; }
 main.narrow { max-width: 46rem; }
@@ -184,7 +188,7 @@ main.narrow { max-width: 46rem; }
 .footer a:hover { color: var(--accent); }
 .footer p { max-width: 42rem; }
 /* Two short columns, set beside each other rather than stretched across the
-   page. A grid would give each of them half of seventy-eight rems and four
+   page. A grid would give each of them half of seventy-two rems and four
    words to fill it with. */
 .footer-grid { display: flex; flex-wrap: wrap; gap: 1.5rem 4rem; }
 .footer-grid > div { min-width: 10rem; }
@@ -620,12 +624,12 @@ td[data-label="Places"] { min-width: 8rem; }
 /* ---- Narrow screens --------------------------------------------- */
 
 @media (max-width: 46rem) {
-  main { padding: 1.25rem .9rem 2.5rem; }
+  /* The gutter matches .wrap, so the masthead and the content share an edge. */
+  main { padding: 1.25rem 1.25rem 2.5rem; }
   .filter-row { grid-template-columns: 1fr 1fr; }
   .filter-row > *:nth-last-child(2) { grid-column: 1 / -1; }
   .filter-row > *:last-child { grid-column: 1 / -1; }
-  .masthead-inner { padding: .6rem .9rem; }
-  .masthead nav { width: 100%; margin-left: 0; gap: .9rem; }
+  .nav { width: 100%; margin-left: 0; }
   .strip > div { border-right: 0; border-bottom: 1px solid var(--rule); }
   .strip > div:last-child { border-bottom: 0; }
 
@@ -647,7 +651,7 @@ td[data-label="Places"] { min-width: 8rem; }
 
 @media (min-width: 60rem) {
   .with-rail { display: grid; grid-template-columns: minmax(0, 1fr) 14rem; gap: 2.5rem; align-items: start; }
-  .rail { position: sticky; top: 4.5rem; font-size: .85rem; }
+  .rail { position: sticky; top: 1.75rem; font-size: .85rem; }
   .rail ol { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--rule); }
   .rail li a {
     display: block; padding: .3rem .75rem; color: var(--ink-soft);
@@ -673,8 +677,7 @@ td[data-label="Places"] { min-width: 8rem; }
 }
 
 @media print {
-  .masthead nav, .query, .pager, .map-controls, .actions, .rail { display: none; }
-  .masthead { position: static; }
+  .nav, .query, .pager, .map-controls, .actions, .rail { display: none; }
   body { background: #fff; }
   .panel, .table-wrap { border-color: #999; box-shadow: none; background: #fff; }
   .section { break-inside: avoid; }

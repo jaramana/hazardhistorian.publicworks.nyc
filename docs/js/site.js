@@ -328,15 +328,44 @@ HH.footer = function (meta) {
       'strong opinions about empty cells</span>.</p>';
 };
 
+/* ---- Masthead -------------------------------------------------------
+   Written once here rather than repeated on every page, which is the shape
+   every project under publicworks.nyc uses. The markup and the measurements
+   are set out in that repository's README; only --accent differs between
+   sites. An event page belongs to the explorer, so it marks Explore. */
+
+HH.pages = [
+  { href: 'explore.html', nav: 'Explore' },
+  { href: 'compare.html', nav: 'Compare' },
+  { href: 'method.html',  nav: 'Method' },
+  { href: 'about.html',   nav: 'About' }
+];
+
+HH.masthead = function () {
+  const head = document.querySelector('[data-chrome="masthead"]');
+  if (!head) return;
+
+  let here = window.location.pathname.split('/').pop() || 'index.html';
+  if (here === 'event.html') here = 'explore.html';
+
+  const links = HH.pages.map(p =>
+    '<a href="' + p.href + '"' +
+    (p.href === here ? ' aria-current="page"' : '') + '>' + p.nav + '</a>'
+  ).join('');
+
+  head.className = 'masthead';
+  head.innerHTML =
+    '<div class="wrap masthead-inner">' +
+      '<a class="wordmark" href="index.html">NYC Hazard Historian</a>' +
+      '<nav class="nav" aria-label="Sections">' + links + '</nav>' +
+    '</div>';
+};
+
 /* ---- Page bootstrap ------------------------------------------------ */
 
 HH.start = function (run) {
   document.addEventListener('DOMContentLoaded', function () {
-    // Mark the current page in the masthead without hard-coding it per page.
-    const here = window.location.pathname.split('/').pop() || 'index.html';
-    document.querySelectorAll('.masthead nav a').forEach(a => {
-      if (a.getAttribute('href') === here) a.setAttribute('aria-current', 'page');
-    });
+    HH.masthead();
     HH.meta().then(meta => {
       HH.footer(meta);
       run(meta);
