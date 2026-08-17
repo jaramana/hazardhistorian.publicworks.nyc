@@ -614,7 +614,7 @@ function clearAll() {
   changed();
 }
 
-/* The hazard list is the normalised hazard values that actually occur, with the
+/* The hazard list is the normalized hazard values that actually occur, with the
    number of events holding each. It used to be grouped under Water, Winter,
    Temperature and Wind, which no source publishes. A count is a fact; a group
    was a claim. */

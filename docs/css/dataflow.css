@@ -1,7 +1,7 @@
 /* Data flow page.
    ------------------------------------------------------------------
    Layers on site.css and borrows all of its tokens. The one idea here is the
-   band: a labelled region of the flow, with a connector between bands, so the
+   band: a labeled region of the flow, with a connector between bands, so the
    direction of travel is legible before a word is read. */
 
 .df-toolbar {

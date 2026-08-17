@@ -147,7 +147,7 @@ the point.
 Not measured: real-world load time over a slow connection, memory use on an old
 device, and rendering time for the largest event.
 
-## Browser behaviour
+## Browser behavior
 
 Rendered and inspected in headless Chrome 140 at desktop and at a 375 pixel
 viewport. Every page renders with no script errors. The 404 page returns a real

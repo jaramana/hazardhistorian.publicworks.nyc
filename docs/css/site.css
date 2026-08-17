@@ -41,7 +41,7 @@
 
   --warn:         #8f4415;   /* questionable or flagged values */
   --warn-soft:    #fbeade;
-  --absent:       #5f6672;   /* the colour of a stated absence */
+  --absent:       #5f6672;   /* the color of a stated absence */
   --absent-soft:  #e9ecf0;
 
   /* The refractive layer. Controls and chrome sit on it; data never does.
@@ -414,8 +414,8 @@ td[data-label="Places"] { min-width: 8rem; }
 }
 
 /* ---- Hazard chips -----------------------------------------------
-   The hazard names are the normalised values the pipeline publishes. There is
-   no colour coding, because the groups a colour coding would need are not in
+   The hazard names are the normalized values the pipeline publishes. There is
+   no color coding, because the groups a color coding would need are not in
    any source: they were a presentation invention and have been removed. */
 
 .hz { display: inline-flex; flex-wrap: wrap; gap: .25rem; }
@@ -427,7 +427,7 @@ td[data-label="Places"] { min-width: 8rem; }
 
 /* ---- Values and their absence ----------------------------------- */
 /* The one thing this site must never do is print a zero for something nobody
-   measured. An absent value is written out in words, in its own colour, at the
+   measured. An absent value is written out in words, in its own color, at the
    same size as a number would have been. */
 
 .val { font-family: var(--mono); font-variant-numeric: tabular-nums; }

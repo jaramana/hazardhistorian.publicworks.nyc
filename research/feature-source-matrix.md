@@ -185,8 +185,8 @@ collisions do not, and the site used to state one window for both. The windows
 are declared in `CONSEQUENCE_WINDOWS` and printed by the panel that used them.
 
 **The hazard groups were removed.** Water, Winter, Temperature and Wind were a
-presentation invention, filed drought under Temperature, and carried a colour.
-The eighteen normalised hazard values are now the whole vocabulary, listed with
+presentation invention, filed drought under Temperature, and carried a color.
+The eighteen normalized hazard values are now the whole vocabulary, listed with
 their event counts.
 
 **"Not here, and why" left the event pages.** Four datasets are missing from

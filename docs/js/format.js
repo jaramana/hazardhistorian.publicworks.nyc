@@ -186,13 +186,13 @@ HH.duration = function (a, b) {
   return days + (days === 1 ? ' day' : ' days');
 };
 
-/* A hazard chip, carrying the normalised hazard value the pipeline publishes.
+/* A hazard chip, carrying the normalized hazard value the pipeline publishes.
 
-   There was once a colour on these, one per presentation group: Water, Winter,
+   There was once a color on these, one per presentation group: Water, Winter,
    Temperature, Wind. No source publishes those groups. They were this site's
    own invention, they put drought under Temperature and tropical cyclones under
-   Wind, and a colour is a claim as much as a word is. Both the groups and the
-   colours are gone, and the chip is just the name. */
+   Wind, and a color is a claim as much as a word is. Both the groups and the
+   colors are gone, and the chip is just the name. */
 HH.hazardTag = function (key, meta) {
   const h = (meta.hazards || {})[key] || { label: key };
   const el = document.createElement('span');

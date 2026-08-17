@@ -130,7 +130,7 @@ gust at all. It is called a two-minute wind everywhere, in the site, the
 columns and the downloads.
 
 **A derived value says so.** Storm surge is not published; it is the observed
-water level minus the predicted tide, calculated here, and labelled as derived
+water level minus the predicted tide, calculated here, and labeled as derived
 everywhere it appears. So is any event peak, which is the highest single daily
 station reading over the window rather than an average.
 
@@ -173,6 +173,46 @@ layer is the only thing read live from another service at page load, so it is
 probed and says so when the archive does not answer: an empty reflectivity
 layer must never read as clear weather.
 
+### When a source moves
+
+The NOAA file names carry a processing stamp that changes when a year is
+reprocessed, so the fetch stage reads the directory listing rather than
+constructing names, and removes the stale copy of a reprocessed year. The
+HURDAT2 file is reissued every season and is found the same way.
+
+OpenFEMA datasets carry a version in the path, and the version is part of the
+source identity. `FimaNfipClaims` v2 and `FimaNfipPolicies` v2 are deprecated
+from 15 October 2026; this project uses `NfipClaims` v3. If a FEMA request
+starts returning 404, check the version before anything else.
+
+If a dataset changes shape rather than location, validation will say which check
+failed and by how much. Do not raise a threshold to make a build pass without
+understanding what moved.
+
+### Known gaps
+
+- School attendance, power outages, most sanitation operations and pre-2020
+  subway ridership are not published at the grain the record needs. They are set
+  out once on the method page, and linked from the consequence section of an
+  event page, because the gap belongs to the record rather than to any one
+  event.
+- Events before 1950 are absent. The city's tool offers dates back to 1785 from
+  a source this project has not identified.
+- Rainfall rate and heat index cannot be derived from daily summaries, so they
+  are not offered. Hourly observations would support them at the cost of about
+  two gigabytes of raw CSV.
+- Flood sensors began around 2021 and cover too small a slice to be useful yet.
+- Air quality is fetched at county-day grain, which is coarser than an event
+  chart implies, and is not yet shown on event pages.
+- The city's tool reports 2,431 events against 2,392 here. The difference is
+  unexplained and is consistent with entries from before 1950.
+
+## Tools used
+
+Python standard library for the pipeline. Vanilla HTML, CSS and JavaScript for
+the site, with MapLibre GL for maps and CARTO for basemaps. Claude for
+development.
+
 ## Usage
 
 You need Python 3.9 or newer. Nothing else.
@@ -203,22 +243,6 @@ python3 tools/serve.py
 Then open `http://127.0.0.1:8787`. It serves compressed, as GitHub Pages does,
 so what you measure locally is what a reader gets.
 
-## When a source moves
-
-The NOAA file names carry a processing stamp that changes when a year is
-reprocessed, so the fetch stage reads the directory listing rather than
-constructing names, and removes the stale copy of a reprocessed year. The
-HURDAT2 file is reissued every season and is found the same way.
-
-OpenFEMA datasets carry a version in the path, and the version is part of the
-source identity. `FimaNfipClaims` v2 and `FimaNfipPolicies` v2 are deprecated
-from 15 October 2026; this project uses `NfipClaims` v3. If a FEMA request
-starts returning 404, check the version before anything else.
-
-If a dataset changes shape rather than location, validation will say which check
-failed and by how much. Do not raise a threshold to make a build pass without
-understanding what moved.
-
 ## Repository layout
 
 | Path | What it is |
@@ -239,30 +263,6 @@ understanding what moved.
 | `build/` | Intermediate tables and reports. Not committed |
 
 Every tunable lives in `pipeline/00_config.py`.
-
-## Known gaps
-
-- School attendance, power outages, most sanitation operations and pre-2020
-  subway ridership are not published at the grain the record needs. They are set
-  out once on the method page, and linked from the consequence section of an
-  event page, because the gap belongs to the record rather than to any one
-  event.
-- Events before 1950 are absent. The city's tool offers dates back to 1785 from
-  a source this project has not identified.
-- Rainfall rate and heat index cannot be derived from daily summaries, so they
-  are not offered. Hourly observations would support them at the cost of about
-  two gigabytes of raw CSV.
-- Flood sensors began around 2021 and cover too small a slice to be useful yet.
-- Air quality is fetched at county-day grain, which is coarser than an event
-  chart implies, and is not yet shown on event pages.
-- The city's tool reports 2,431 events against 2,392 here. The difference is
-  unexplained and is consistent with entries from before 1950.
-
-## Tools used
-
-Python standard library for the pipeline. Vanilla HTML, CSS and JavaScript for
-the site, with MapLibre GL for maps and CARTO for basemaps. Claude for
-development.
 
 ## License
 

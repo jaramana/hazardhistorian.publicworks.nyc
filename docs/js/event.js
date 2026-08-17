@@ -478,17 +478,17 @@ function tideChart(t) {
   const x = i => L + (i / Math.max(1, obs.length - 1)) * (W - L - R);
   const y = v => H - B - ((v - lo) / Math.max(0.1, hi - lo)) * (H - B - TOP);
 
-  const path = (key, colour, dash) => {
+  const path = (key, color, dash) => {
     const d = obs.map((p, i) => (p[key] === null || p[key] === undefined) ? null
       : (i === 0 ? 'M' : 'L') + x(i).toFixed(1) + ' ' + y(p[key]).toFixed(1))
       .filter(Boolean).join(' ');
     const n = svgEl('path', { d: d.replace(/^L/, 'M'), fill: 'none',
-      stroke: colour, 'stroke-width': '1.8' });
+      stroke: color, 'stroke-width': '1.8' });
     if (dash) n.setAttribute('stroke-dasharray', '4 3');
     return n;
   };
 
-  // Value axis: three labelled gridlines, with the unit named once.
+  // Value axis: three labeled gridlines, with the unit named once.
   [lo, (lo + hi) / 2, hi].forEach(v => {
     svg.appendChild(svgEl('line', { x1: L, x2: W - R, y1: y(v), y2: y(v),
       stroke: '#d8dde4' }));

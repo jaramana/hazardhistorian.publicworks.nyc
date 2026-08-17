@@ -116,7 +116,7 @@ const FLOW = {
           note: 'The one figure this project calculates rather than reads.',
           steps: [
             ['Two calls per event, per station', 'Observed water level and predicted tide are fetched for the event window. This is most of the forty minutes a first run takes.'],
-            ['Surge is derived', 'Storm surge is not published anywhere. It is the observed level minus the predicted tide, calculated here, and labelled as derived every place it appears.'],
+            ['Surge is derived', 'Storm surge is not published anywhere. It is the observed level minus the predicted tide, calculated here, and labeled as derived every place it appears.'],
             ['Only where it could matter', 'Fetched for coastal flooding, tropical cyclones, coastal hazards, high winds and flash flooding, because each event costs API calls.'],
             ['A peak is a peak, not an average', 'An event peak is the highest single reading over the window.']
           ]

@@ -101,7 +101,7 @@ The current tool presents these as one event, `SW0321`, with critical issues
 "Coastal Flooding, High Winds". Merging them was a curatorial act, not a
 property of the source.
 
-So the model needs three levels, and the third must be labelled as
+So the model needs three levels, and the third must be labeled as
 project-derived:
 
 | Level | Source | Grain |
@@ -211,7 +211,7 @@ that pattern is the source splitting a storm rather than an error in the join.
 1. Borough is the common geographic grain. Sub-borough detail exists for Queens
    in the later period only and cannot be offered uniformly.
 2. The event is the episode, with a small published exceptions file for merges
-   such as Sandy. The merge rule is project-derived and labelled.
+   such as Sandy. The merge rule is project-derived and labeled.
 3. The zone and county mapping, the event-type to hazard mapping, and the merge
    exceptions all live in configuration.
 4. Coverage before 1990 is too thin to support trend claims, and coverage before

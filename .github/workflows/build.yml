@@ -30,7 +30,7 @@ jobs:
 
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.12"
 
       # The pipeline uses the standard library only, so there is nothing to
       # install. The cache is for the downloads, which are the slow part.

@@ -28,8 +28,8 @@ headless Chrome:
 | Sortable columns expose `aria-sort` on the active column | Pass |
 | Sorting is a real button, not a click handler on a heading | Pass |
 | Every row checkbox has an accessible name naming its event | Pass |
-| Chip list is labelled, and each remove button names what it removes | Pass |
-| Absent values carry a written reason, not only a colour | Pass |
+| Chip list is labeled, and each remove button names what it removes | Pass |
+| Absent values carry a written reason, not only a color | Pass |
 | Every cell carries its column name for narrow screens | Pass |
 | Current page marked in the masthead | Pass |
 | Only `tabindex="-1"` is used, so no element jumps the tab order | Pass |
@@ -47,7 +47,7 @@ The chip list takes focus after a filter is added, so a keyboard user lands next
 to the thing they just made rather than at the top of the page.
 
 **Focus visibility.** A single `:focus-visible` rule gives every focusable
-element a two-pixel outline with a two-pixel offset, in the accent colour, at
+element a two-pixel outline with a two-pixel offset, in the accent color, at
 7.1:1 against the page. Nothing suppresses outlines anywhere in the stylesheet.
 
 **Charts and maps.** Every chart has a table beneath it holding the same
@@ -64,9 +64,9 @@ scrolling under `prefers-reduced-motion`. The radar loop never plays on its own,
 and when started deliberately it steps at 1.4 seconds a frame rather than 0.5
 under that preference.
 
-**Colour.** No status is carried by colour alone. An absent value is written out
+**Color.** No status is carried by color alone. An absent value is written out
 in words at the same size a number would have been. Hazard chips are tinted by
-group and always print their name. Text colours were chosen against measured
+group and always print their name. Text colors were chosen against measured
 contrast: the faint ink is 5.1:1 on the page and 4.7:1 on sunken panels, and
 control edges use a darker grey than the hairlines because a control edge carries
 meaning and needs 3:1.
@@ -105,7 +105,7 @@ sentence. It now takes the heading text alone.
   This is the largest gap and the next thing to do.
 - No testing with voice control or a switch device.
 - No testing at 400 per cent zoom, only at a 375 pixel viewport.
-- Colour contrast was reasoned from the chosen tokens rather than measured
+- Color contrast was reasoned from the chosen tokens rather than measured
   across every rendered combination with a tool.
 - The MapLibre controls are the library's own and were not audited.
 

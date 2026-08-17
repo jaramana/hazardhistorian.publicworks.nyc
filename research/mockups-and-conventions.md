@@ -47,7 +47,7 @@ drift apart.
 ### Other intent worth keeping
 
 - **Row selection for comparison.** The result table carries a checkbox column
-  labelled Select. Comparison was always meant to start from the result set.
+  labeled Select. Comparison was always meant to start from the result set.
 - **Persistent event context.** The WSP summary keeps a left rail naming the
   event and listing its consequence sections, with an on-this-page rail on the
   right. The intent is that a reader never loses which event they are inside.
@@ -85,7 +85,7 @@ From `paygap.publicworks.nyc` and `schools.publicworks.nyc`.
 | Site code | One JavaScript file per page, plus shared search, table and format helpers |
 | Data | Generated JSON under `docs/data/`, downloads under `docs/downloads/` |
 | Research | `research/` holds the source manifest and inventories |
-| Licence | BSD 3-Clause for code, attribution for compiled data |
+| License | BSD 3-Clause for code, attribution for compiled data |
 | Framework | None. No build step for the site |
 
 Schools adds `pipeline/03_validate.py` between normalize and export, and its

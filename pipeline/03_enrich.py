@@ -238,7 +238,7 @@ def event_tides(event, station="8518750"):
     """Observed water level and predicted tide over the event window.
 
     Surge is the difference between them. It is derived by this project, so it
-    is labelled as derived wherever it appears. The six-minute product does not
+    is labeled as derived wherever it appears. The six-minute product does not
     reach the early record, so the hourly product is used as a fallback and the
     interval is recorded with the values.
     """

@@ -179,7 +179,7 @@ from either public source without approximation.
 ### Beach advisories and closures
 
 **Unverified.** NYC DOHMH publishes beach water quality sampling and advisory
-data; the catalogue search surfaced New York State beach datasets rather than the
+data; the catalog search surfaced New York State beach datasets rather than the
 city's, so the correct dataset identifier still has to be found.
 
 ### Sanitation
@@ -187,14 +187,14 @@ city's, so the correct dataset identifier still has to be found.
 **Partly verified.** DSNY Salt Usage `tavr-zknk` and PlowNYC `rmhc-afj9` are
 public. The wider operational metrics HHC shows, spreaders deployed and
 residential collection tonnage against the prior year, were not found in the
-catalogue and are likely internal.
+catalog and are likely internal.
 
 ### Power outages
 
 **Not found.** The User Guide states these come from utilities reporting to the
 New York State Department of Public Service, and that a fuller version exists
 only under a sensitive data sharing agreement. No public historical dataset at
-network or borough grain was found in either the city or state catalogue. This is
+network or borough grain was found in either the city or state catalog. This is
 the strongest deferral candidate in the tool.
 
 ### School attendance
