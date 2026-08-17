@@ -293,22 +293,33 @@ HH.copyLink = function (button) {
 HH.REPO = 'https://github.com/jaramana/hazardhistorian.publicworks.nyc';
 
 HH.footer = function (meta) {
-  const el = document.getElementById('foot');
+  const el = document.querySelector('[data-chrome="footer"]');
   if (!el) return;
   const links = list => list.map(([href, text]) =>
     '<li><a href="' + href + '">' + text + '</a></li>').join('');
 
+  el.className = 'footer';
   el.innerHTML =
-    '<div class="footer-grid">' +
-      '<div><h2>Sections</h2><ul>' + links([
-        ['explore.html', 'Explore'],
-        ['compare.html', 'Compare'],
-        ['method.html', 'Method'],
-        ['about.html', 'About']
+    '<div class="wrap"><div class="footer-grid">' +
+      '<div><h4>Views</h4><ul>' + links([
+        ['explore.html', 'Explore events'],
+        ['compare.html', 'Compare events'],
+        ['dataflow.html', 'Data flow']
       ]) + '</ul></div>' +
-      '<div><h2>Project</h2><ul>' + links([
+      '<div><h4>Reference</h4><ul>' + links([
         ['method.html#downloads', 'Download the data'],
-        ['dataflow.html', 'Data flow'],
+        ['method.html', 'Method and limits'],
+        ['method.html#fields', 'Data dictionary'],
+        ['method.html#sources', 'Sources and freshness']
+      ]) + '</ul></div>' +
+      '<div><h4>Sources</h4><ul>' + links([
+        ['https://www.ncei.noaa.gov/products/storm-events-database', 'NOAA Storm Events'],
+        ['https://www.ncei.noaa.gov/products/land-based-station/global-historical-climatology-network-daily', 'GHCN Daily'],
+        ['https://tidesandcurrents.noaa.gov/', 'NOAA Tides and Currents'],
+        ['https://www.fema.gov/about/openfema/data-sets', 'OpenFEMA']
+      ]) + '</ul></div>' +
+      '<div><h4>Project</h4><ul>' + links([
+        ['about.html', 'About this site'],
         [HH.REPO, 'Source on GitHub'],
         [HH.REPO + '/issues', 'Report an error'],
         // publicworks.nyc is the index the other projects are filed under.
@@ -325,7 +336,8 @@ HH.footer = function (meta) {
       'from published federal and city sources. Public data, public method, ' +
       'built with Python and ' +
       '<span class="wink" title="Four kinds of absence, and not one of them is a zero.">' +
-      'strong opinions about empty cells</span>.</p>';
+      'strong opinions about empty cells</span>.</p>' +
+    '</div>';
 };
 
 /* ---- Masthead -------------------------------------------------------
@@ -340,6 +352,20 @@ HH.pages = [
   { href: 'method.html',  nav: 'Method' },
   { href: 'about.html',   nav: 'About' }
 ];
+
+/* A status line, so the instrument reports what it is showing. Any element
+   with data-statusline gets it. The attribute is not data-status, which
+   event.js already uses to carry the status of a single measure. */
+
+HH.statusline = function (meta) {
+  const nodes = document.querySelectorAll('[data-statusline]');
+  if (!nodes.length) return;
+  const txt = meta.coverage.first + '–' + meta.coverage.last + ' · ' +
+    HH.num(meta.events) + ' events · ' +
+    HH.num(meta.event_rows) + ' Weather Service records · built ' +
+    HH.date(meta.built, { long: true });
+  nodes.forEach(n => { n.textContent = txt; });
+};
 
 HH.masthead = function () {
   const head = document.querySelector('[data-chrome="masthead"]');
@@ -368,6 +394,7 @@ HH.start = function (run) {
     HH.masthead();
     HH.meta().then(meta => {
       HH.footer(meta);
+      HH.statusline(meta);
       run(meta);
     }).catch(err => {
       const main = document.querySelector('main');

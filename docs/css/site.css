@@ -98,11 +98,11 @@ body {
 
 /* The heading scale is The Pay Gap's and Schools Finder's, so a reader moving
    between the three sites is not asked to relearn what a title looks like. */
-h1, h2, h3, h4 { line-height: 1.15; letter-spacing: -.022em; font-weight: 700; margin: 0 0 .5rem; }
-h1 { font-size: clamp(1.9rem, 3.6vw, 2.6rem); letter-spacing: -.03em; }
-h2 { font-size: clamp(1.25rem, 2.2vw, 1.6rem); }
-h3 { font-size: 1.05rem; font-weight: 600; }
-h4 { font-size: .95rem; font-weight: 600; color: var(--ink-soft); }
+h1, h2, h3, h4 { line-height: 1.12; letter-spacing: -.022em; font-weight: 700; margin: 0 0 .5em; }
+h1 { font-size: clamp(2.1rem, 5.2vw, 3.6rem); letter-spacing: -.03em; }
+h2 { font-size: clamp(1.4rem, 2.6vw, 1.9rem); margin-top: 2.5em; }
+h3 { font-size: 1.1rem; letter-spacing: -.01em; margin-top: 2em; }
+h4 { font-size: .95rem; color: var(--ink-soft); }
 p  { margin: 0 0 1rem; }
 a  { color: var(--accent); text-underline-offset: .18em; }
 a:hover { color: var(--accent-ink); }
@@ -169,8 +169,24 @@ a:hover { color: var(--accent-ink); }
 .nav a:hover { background: var(--paper-sunken); color: var(--ink); }
 .nav a[aria-current="page"] { color: var(--accent); background: var(--accent-soft); }
 
-main { max-width: var(--wide); margin: 0 auto; padding: 1.75rem 1.25rem 3rem; }
-main.narrow { max-width: 46rem; }
+/* main sets no width of its own. Every band inside it carries .wrap, which is
+   what keeps the content on the same left and right edge as the masthead. */
+main { padding-bottom: 5rem; }
+
+/* The head of a page: title, one sentence under it, and the build line. */
+.console { padding: clamp(2rem, 5vw, 3.5rem) 0 1.5rem; }
+.console-h1 {
+  font-size: clamp(1.7rem, 3.4vw, 2.5rem);
+  letter-spacing: -.028em; margin-bottom: .5rem;
+}
+.console-sub {
+  color: var(--ink-soft); max-width: 44rem;
+  font-size: 1.02rem; margin-bottom: 1.75rem;
+}
+.statusline {
+  color: var(--ink-faint); font-size: .8rem; margin: .9rem 0 0;
+  max-width: none; letter-spacing: -.01em;
+}
 
 /* ---- Footer -----------------------------------------------------
    Columns and a closing colophon, the shape The Pay Gap and Schools Finder
@@ -179,28 +195,24 @@ main.narrow { max-width: 46rem; }
 
 .footer {
   border-top: 1px solid var(--rule);
-  background: var(--paper-raised);
-  color: var(--ink-faint);
-  font-size: .87rem;
+  margin-top: 4rem; padding: 2rem 0 3rem;
+  font-size: .87rem; color: var(--ink-faint);
 }
-.footer-inner { max-width: var(--wide); margin: 0 auto; padding: 2rem 1.25rem 3rem; }
+.footer p { max-width: 40rem; }
 .footer a { color: var(--ink-soft); }
 .footer a:hover { color: var(--accent); }
-.footer p { max-width: 42rem; }
-/* Two short columns, set beside each other rather than stretched across the
-   page. A grid would give each of them half of seventy-two rems and four
-   words to fill it with. */
-.footer-grid { display: flex; flex-wrap: wrap; gap: 1.5rem 4rem; }
-.footer-grid > div { min-width: 10rem; }
-.footer h2 {
-  font: 500 .7rem/1.4 var(--sans);
-  text-transform: uppercase; letter-spacing: .11em;
+.footer-grid {
+  display: grid; gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+}
+.footer h4 {
+  font-size: .75rem; text-transform: uppercase; letter-spacing: .09em;
   color: var(--ink-faint); margin: 0 0 .5rem;
 }
 .footer ul { list-style: none; padding: 0; margin: 0; }
-.footer li { margin-bottom: .28rem; }
+.footer li { margin-bottom: .25rem; }
 .footer .built { margin: 1.5rem 0 0; font-variant-numeric: tabular-nums; }
-.colophon { margin-top: .75rem; font-size: .83rem; }
+.colophon { margin-top: 1.5rem; font-size: .82rem; }
 .colophon .wink { cursor: help; border-bottom: 1px dotted var(--rule-strong); }
 
 /* The standing caution. Schools Finder carries the same box in the same place,
@@ -217,8 +229,13 @@ main.narrow { max-width: 46rem; }
 /* ---- Prose ------------------------------------------------------ */
 
 .prose { max-width: var(--measure); }
-.prose h2 { margin-top: 2.2rem; }
-.prose h3 { margin-top: 1.6rem; }
+
+/* .prose on the same element as .wrap would shrink the wrap to the reading
+   measure, and the wrap's auto margins would then center the whole column
+   away from the page's left edge. Keep the wrap full width and constrain
+   its children instead. */
+.wrap.prose { max-width: none; }
+.wrap.prose > * { max-width: var(--measure); }
 .prose ul, .prose ol { padding-left: 1.15rem; margin: 0 0 1rem; }
 .prose li { margin-bottom: .35rem; }
 .prose code {

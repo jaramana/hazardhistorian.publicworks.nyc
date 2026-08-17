@@ -12,14 +12,18 @@
 
 <header data-chrome="masthead"></header>
 
-<main id="main-content" class="narrow">
-  <h1>About</h1>
+<main id="main-content">
+  <section class="wrap console">
+    <h1 class="console-h1">About</h1>
+    <p class="console-sub">
+      NYC Hazard Historian assembles the public record of hazard events in New
+      York City, from federal and city sources, and shows every figure with its
+      source, its period and its status.
+    </p>
+    <p class="statusline mono" data-statusline></p>
+  </section>
 
-  <div class="prose">
-    <p class="lede">NYC Hazard Historian assembles the public record of hazard
-    events in New York City, from federal and city sources, and shows every
-    figure with its source, its period and its status.</p>
-
+  <section class="wrap prose">
     <div class="note-box">
       <p><strong>This is an experimental project, not an official one.</strong>
       It has no standing, it can be wrong, and no agency has checked it. For
@@ -81,10 +85,10 @@
     <p>Code is released under the BSD 3-Clause license. The compiled data is
     free to reuse with attribution. The underlying data carries the terms of the
     agencies that publish it.</p>
-  </div>
+  </section>
 </main>
 
-<footer class="footer"><div class="footer-inner" id="foot"></div></footer>
+<footer data-chrome="footer"></footer>
 
 <script src="js/format.js"></script>
 <script src="js/site.js"></script>

@@ -13,72 +13,74 @@
 <header data-chrome="masthead"></header>
 
 <main id="main-content">
-  <div class="hero">
-    <p class="eyebrow">A public record, rebuilt from the original sources</p>
-    <h1>Hazard events in New York City, <span id="span">1958 onward</span></h1>
-    <p class="lede">Every hazard event the National Weather Service recorded for
-    the five boroughs and New York Harbor, with the deaths, damage, station
-    readings, complaints, water levels and federal declarations filed against
-    each one. Each figure carries its source, its period and its status.</p>
+<div class="wrap">
+    <div class="hero">
+      <p class="eyebrow">A public record, rebuilt from the original sources</p>
+      <h1>Hazard events in New York City, <span id="span">1958 onward</span></h1>
+      <p class="lede">Every hazard event the National Weather Service recorded for
+      the five boroughs and New York Harbor, with the deaths, damage, station
+      readings, complaints, water levels and federal declarations filed against
+      each one. Each figure carries its source, its period and its status.</p>
 
-    <div class="note-box">
-      <p><strong>This is an experimental project, not an official one.</strong>
-      It is an independent reconstruction from published federal and city data,
-      built to see whether the record can be read in one place. It has no
-      standing, it can be wrong, and no agency has checked it. For anything
-      authoritative, use
-      <a href="https://www.nyc.gov/site/em/ready/hazard-mitigation.page">NYC
-      Emergency Management</a> and its own Hazard History and Consequence
-      Tool.</p>
+      <div class="note-box">
+        <p><strong>This is an experimental project, not an official one.</strong>
+        It is an independent reconstruction from published federal and city data,
+        built to see whether the record can be read in one place. It has no
+        standing, it can be wrong, and no agency has checked it. For anything
+        authoritative, use
+        <a href="https://www.nyc.gov/site/em/ready/hazard-mitigation.page">NYC
+        Emergency Management</a> and its own Hazard History and Consequence
+        Tool.</p>
+      </div>
+
+      <div class="strip" id="strip" aria-label="The collection in figures"></div>
+
+      <div class="jump">
+        <a href="explore.html">
+          <span class="k">Explore</span>
+          <span class="d" id="jump-count">Filter by date, hazard, borough or a threshold you set</span>
+        </a>
+        <a href="compare.html">
+          <span class="k">Compare</span>
+          <span class="d">Up to four events side by side, measure by measure</span>
+        </a>
+        <a href="method.html#downloads">
+          <span class="k">Take the data</span>
+          <span class="d">Two CSV files, a status column beside every value</span>
+        </a>
+      </div>
     </div>
 
-    <div class="strip" id="strip" aria-label="The collection in figures"></div>
+    <section class="section" aria-labelledby="notable-h">
+      <h2 id="notable-h">Four events, four different measures</h2>
+      <p class="val-note">Each is the largest in this record on the one measure
+      named beside it, and on no other. The record does not rank events.</p>
+      <div class="panels" id="notable">
+        <p class="loading">Loading.</p>
+      </div>
+    </section>
 
-    <div class="jump">
-      <a href="explore.html">
-        <span class="k">Explore</span>
-        <span class="d" id="jump-count">Filter by date, hazard, borough or a threshold you set</span>
-      </a>
-      <a href="compare.html">
-        <span class="k">Compare</span>
-        <span class="d">Up to four events side by side, measure by measure</span>
-      </a>
-      <a href="method.html#downloads">
-        <span class="k">Take the data</span>
-        <span class="d">Two CSV files, a status column beside every value</span>
-      </a>
-    </div>
-  </div>
-
-  <section class="section" aria-labelledby="notable-h">
-    <h2 id="notable-h">Four events, four different measures</h2>
-    <p class="val-note">Each is the largest in this record on the one measure
-    named beside it, and on no other. The record does not rank events.</p>
-    <div class="panels" id="notable">
-      <p class="loading">Loading.</p>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="read-h">
-    <h2 id="read-h">Reading the record</h2>
-    <div class="prose">
-      <ul>
-        <li>An event is one National Weather Service episode: one weather
-        system, holding one or more records. Two episodes are merged by hand,
-        and any merged event says so.</li>
-        <li>All hazard types have been recorded only since 1996. Before that the
-        database holds tornado, hail and wind alone, so an early decade counts
-        what was collected as much as what happened.</li>
-        <li>A measure nobody collected is never printed as a zero. Five statuses
-        separate a real zero from an absence, and they travel into the downloads
-        as their own columns.</li>
-      </ul>
-      <p><a href="method.html">Method, sources and limits</a>.</p>
-    </div>
-  </section>
+    <section class="section" aria-labelledby="read-h">
+      <h2 id="read-h">Reading the record</h2>
+      <div class="prose">
+        <ul>
+          <li>An event is one National Weather Service episode: one weather
+          system, holding one or more records. Two episodes are merged by hand,
+          and any merged event says so.</li>
+          <li>All hazard types have been recorded only since 1996. Before that the
+          database holds tornado, hail and wind alone, so an early decade counts
+          what was collected as much as what happened.</li>
+          <li>A measure nobody collected is never printed as a zero. Five statuses
+          separate a real zero from an absence, and they travel into the downloads
+          as their own columns.</li>
+        </ul>
+        <p><a href="method.html">Method, sources and limits</a>.</p>
+      </div>
+    </section>
+</div>
 </main>
 
-<footer class="footer"><div class="footer-inner" id="foot"></div></footer>
+<footer data-chrome="footer"></footer>
 
 <script src="js/format.js"></script>
 <script src="js/site.js"></script>
