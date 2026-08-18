@@ -24,6 +24,11 @@ function el(tag, attrs, text) {
 }
 
 HH.start(function (meta) {
+  // Mounted first, so the box is there to type into while the index is still
+  // arriving. It loads the index itself and shares HH.index()'s single fetch
+  // with everything below.
+  HHSearch.mount('#home-search', { autofocus: true });
+
   document.getElementById('span').textContent =
     meta.coverage.first + ' to ' + meta.coverage.last;
 
