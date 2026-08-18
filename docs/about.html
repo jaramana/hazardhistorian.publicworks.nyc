@@ -24,62 +24,79 @@
   </section>
 
   <section class="wrap prose">
-    <!-- The experimental notice lives on the home page, once. The section
-         below already says the same thing at length. -->
+    <h2>Why</h2>
+    <p>New York City Emergency Management publishes a Hazard History and
+    Consequence Tool. The record inside it is rich, but getting a question
+    answered out of it is hard. Thirteen consequence datasets sit on their own
+    pages. A search cannot be linked or shared, because it is a form post. A
+    measure nobody collected can print as a zero: the tool reports 0 percent
+    of students absent during Hurricane Sandy, when schools were closed for a
+    week.</p>
+    <p>This site rebuilds the record from the same public sources, and shows
+    every figure next to its source, its period and its status: reported,
+    deferred, or not collected. It is built for anyone who wants to know what
+    happened to this city and what the record says about it, from emergency
+    managers to reporters to anyone building with civic data. Nothing here
+    assumes you have read a storm report before.</p>
 
-    <h2>Not affiliated</h2>
-    <p>This is an independent project. It is not affiliated with, endorsed by,
-    sponsored by or produced by New York City Emergency Management or the City
-    of New York. No agency reviewed it. Agency names appear here only as factual
-    attribution for the data they publish.</p>
-    <p>New York City Emergency Management publishes its own Hazard History and
-    Consequence Tool. This site is a separate reconstruction built from the same
-    underlying public sources, and it does not depend on that tool being
-    available.</p>
-
-    <h2>Who it is for</h2>
-    <p>Anyone who wants to know what has happened to this city and what was
-    recorded about it. It is built to hold up for people who do this
-    professionally, in emergency management, government and climate work, and
-    for anyone building things with civic data, but nothing here assumes you
-    have read a storm report before.</p>
-
-    <h2>What it will not do</h2>
+    <h2>Scope</h2>
     <ul>
-      <li>It does not rank events. The record does not support a ranking and one
-      would be an editorial claim dressed as a measurement. Federal assistance
-      is the sharpest case: it is obligated against a declaration, one
-      declaration can cover fourteen events here, and no page sorts events by
-      it.</li>
-      <li>It does not answer questions in natural language. A filter you can see
-      and undo is more trustworthy than a sentence that guesses at your meaning.</li>
-      <li>It does not fill gaps. Where the public record stops, the site says so
-      and stops with it.</li>
+      <li>It does not rank events. The record does not support a ranking, and
+      a ranking is an editorial claim dressed as a measurement. Federal
+      assistance is the sharpest case: it is obligated against a declaration,
+      one declaration can cover fourteen events here, and no page sorts
+      events by it.</li>
+      <li>It does not answer questions in plain language. A filter you can
+      see and undo is more trustworthy than a sentence that guesses at your
+      meaning.</li>
+      <li>It does not fill gaps. Where the public record stops, the site says
+      so and stops with it.</li>
       <li>It does not estimate, interpolate or repair a source value. Where a
-      published figure looks wrong, it is shown as published and flagged.</li>
+      published figure looks wrong, the site shows it as published and flags
+      it.</li>
     </ul>
 
-    <h2>Corrections</h2>
-    <p>If a figure here disagrees with a source you trust, the source is the
-    thing to check first, and the site names its own so you can. Errors in the
-    processing are this project's fault and worth reporting through the
-    repository.</p>
+    <h2>Built</h2>
+    <p>Python builds the record, in five pipeline stages kept deliberately
+    separate, so a change to one does not force a rerun of the rest. The site
+    itself is static HTML, CSS and JavaScript, with MapLibre GL for maps and
+    CARTO for basemaps.</p>
+    <p>The pipeline and every page are in the
+    <a href="https://github.com/jaramana/hazardhistorian.publicworks.nyc">repository</a>.
+    A run of the pipeline refreshes the data; nothing runs on a schedule.</p>
 
-    <h2>Credit</h2>
+    <h2>Independence</h2>
+    <p>This is an independent project. It is not affiliated with, endorsed
+    by, sponsored by or produced by New York City Emergency Management or the
+    City of New York. No agency reviewed it. Agency names appear here only as
+    attribution for the data they publish.</p>
+    <p>New York City Emergency Management publishes its own Hazard History
+    and Consequence Tool. This site is a separate reconstruction, built from
+    the same public sources, and does not depend on that tool.</p>
+    <p>If a figure here disagrees with a source you trust, check the source
+    first; the site names its own so that you can. Errors in the processing
+    are this project's fault, and worth reporting.</p>
+
+    <h2>Credits</h2>
     <p>Data from the National Oceanic and Atmospheric Administration, the
     National Weather Service, the National Hurricane Center, the Federal
     Emergency Management Agency, the Bureau of Labor Statistics, the
     Environmental Protection Agency, NYC Open Data and the Iowa Environmental
-    Mesonet at Iowa State University. Each one is listed with its grain, its
-    coverage and its caveat on the
+    Mesonet at Iowa State University. Each source is listed with its grain,
+    its coverage and its caveat on the
     <a href="method.html#sources">method page</a>.</p>
-    <p>Built with Python, MapLibre GL, CARTO basemaps and Claude. Part of
-    <a href="https://publicworks.nyc">Public Works NYC</a>, alongside
-    <a href="https://paygap.publicworks.nyc">The Pay Gap</a> and
-    <a href="https://schools.publicworks.nyc">Schools Finder</a>.</p>
-    <p>Code is released under the BSD 3-Clause license. The compiled data is
-    free to reuse with attribution. The underlying data carries the terms of the
-    agencies that publish it.</p>
+    <p>Built with Python, MapLibre GL, CARTO basemaps and Claude.</p>
+
+    <h2>Reuse</h2>
+    <p>The code is released under the BSD 3-Clause license. The compiled
+    data is free to reuse with attribution. The underlying data carries the
+    terms of the agencies that publish it. If you republish a figure, carry
+    its status and its period with it.</p>
+
+    <h2>Contact</h2>
+    <p>If you find an error,
+    <a href="https://github.com/jaramana/hazardhistorian.publicworks.nyc/issues">open
+    an issue</a>. Corrections are the point.</p>
   </section>
 </main>
 
