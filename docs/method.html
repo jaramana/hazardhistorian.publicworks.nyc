@@ -3,9 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Method and data | NYC Hazard Historian</title>
-<meta name="description" content="How the New York City hazard record was rebuilt, what an event is, how absence is handled, what each source publishes, what this site cannot tell you, and the full download.">
+<title>Method — NYC Hazard Historian</title>
+<meta name="description" content="Where each figure comes from, how this site calculates it, what it cannot show, and how to download and rebuild the data.">
 <link rel="stylesheet" href="css/site.css">
+<style>
+  .prose h2 { margin-top: 2.75rem; }
+  .prose h3 { margin-top: 1.75rem; font-size: 1rem; }
+  .prose li { margin-bottom: .5rem; }
+  .prose ul, .prose ol { max-width: var(--measure); }
+  /* .wrap.prose holds its children to the reading measure. A table, a panel
+     grid and the diagram are not prose and need the full column. */
+  .wrap.prose > .table-wrap,
+  .wrap.prose > .panels,
+  .wrap.prose > .dataflow-img,
+  .wrap.prose > #status-list { max-width: none; }
+  .dataflow-img { display: block; width: 100%; height: auto; margin: 1rem 0; }
+</style>
 </head>
 <body>
 <a class="skip" href="#main-content">Skip to the content</a>
@@ -13,319 +26,354 @@
 <header data-chrome="masthead"></header>
 
 <main id="main-content">
-<div class="wrap">
-    <h1>Method and data</h1>
-    <p class="lede">What each figure is a figure of, where it stops, and how to
-    take the whole thing away with you.</p>
+  <section class="wrap console">
+    <h1 class="console-h1">Method</h1>
+    <p class="console-sub">
+      This page tells you where each figure comes from, how this site calculates it, what it cannot show, and how to get the data.
+    </p>
+    <p class="statusline mono" data-statusline></p>
+  </section>
 
-    <div class="with-rail">
-      <div>
-        <section class="section" id="downloads" aria-labelledby="dl-h"
-                 style="margin-top:0; border-top:0; padding-top:0">
-          <h2 id="dl-h">Downloads</h2>
-          <p class="val-note">Site, downloads and per-event files are written from
-          the same objects in one pass. They cannot disagree.</p>
-          <div class="panels">
-            <div class="panel">
-              <h3>Events</h3>
-              <p>One row per event, <span id="n-events"></span> of them. Every
-              headline measure, with a status column beside each one.</p>
-              <p><a class="btn btn-small" href="downloads/nyc-hazard-historian-events.csv">Events, CSV</a></p>
-            </div>
-            <div class="panel">
-              <h3>Evidence</h3>
-              <p>One row per National Weather Service record,
-              <span id="n-rows"></span> of them. This is the grain the source
-              publishes. Join on <code>event_id</code>.</p>
-              <p><a class="btn btn-small" href="downloads/nyc-hazard-historian-evidence.csv">Evidence, CSV</a></p>
-            </div>
-            <div class="panel">
-              <h3>Machine readable</h3>
-              <p>Static JSON. There is no API: static files answer the same
-              questions at no running cost and cannot go down on their own.</p>
-              <ul style="font-size:.9rem; padding-left:1.1rem; margin:0">
-                <li><a href="data/index.json">data/index.json</a>, the search index</li>
-                <li><a href="data/meta.json">data/meta.json</a>, sources and vocabularies</li>
-                <li><code>data/events/{event_id}.json</code>, one file per event</li>
-              </ul>
-            </div>
-          </div>
-          <p class="val-note" style="margin-top:1rem">Built
-          <span id="built"></span>. The compiled data is free to reuse with
-          attribution. The underlying data carries the terms of the agencies that
-          publish it. If you republish a figure, carry its status and its period
-          with it.</p>
-        </section>
+<div class="wrap prose">
+    <h2 id="scope">Scope</h2>
+    <p>This site is a record of the hazard events of New York City. For each
+    event it gives the weather, the water levels, the reported consequences, and
+    the federal assistance. Each figure has its source, its period, and its
+    status.</p>
+    <p>This site is a reconstruction from published federal data and city data.
+    It is not an official record. It does not rank events.</p>
 
-        <section class="section" id="statuses" aria-labelledby="status-h">
-          <h2 id="status-h">Read the status before the value</h2>
-          <div class="prose">
-            <p>A number nobody measured is never shown as a zero. The tool this
-            rebuilds prints <code>0 % absent</code> for school attendance during
-            Hurricane Sandy, when schools were shut for a week.</p>
-            <p>Every measure carries one of five statuses, and they travel into
-            the downloads as their own columns. A spreadsheet with an empty cell
-            for both "nothing happened" and "nobody looked" is the same fault in
-            a different container.</p>
-          </div>
-          <dl class="panel" id="status-list" style="max-width:36rem"></dl>
-          <p class="val-note">Not collected is the common case, not the edge case.
-          Collisions begin in July 2012, 311 in 2004, against an event record that
-          begins in 1958. The build fails if not one measure in it is marked not
-          applicable, because that would mean the distinction had been lost.</p>
-        </section>
+    <h3>What an event is</h3>
+    <p>NOAA publishes a Storm Events Database. One row is one hazard type, in
+    one place, over one time window. A cold spell in January 2000 is five rows,
+    one for each borough. The Weather Service groups those rows into an
+    <b>episode</b>. An episode is one weather system.</p>
+    <p>An event on this site is an episode. This project tested that rule. The
+    four episodes in January 2000 match the first four events in the tool of the
+    City exactly.</p>
+    <p>Hurricane Sandy is the exception. The Weather Service filed it as two
+    episodes: a coastal flood and a high wind. An automatic merge of overlapping
+    episodes gave 982 events at zero tolerance, and 614 events at six hours.
+    That result is too sensitive for the primary unit of a site. Thus a person
+    declares each merge. There are very few merges, and a merged event says so
+    at the top of its page.</p>
 
-        <section class="section" id="event" aria-labelledby="event-h">
-          <h2 id="event-h">What an event is</h2>
-          <div class="prose">
-            <p>NOAA publishes a Storm Events Database. One row is one hazard type,
-            in one place, over one time window: a cold spell in January 2000 is
-            five rows, one per borough. The Weather Service groups those rows into
-            an <b>episode</b>, which is one weather system.</p>
-            <p>An event here is an episode. That was tested, not assumed: the four
-            episodes in January 2000 match the first four events in the city's own
-            tool exactly.</p>
-            <p>Hurricane Sandy is the exception. The Weather Service filed it as
-            two episodes, a coastal flood and a high wind. Merging overlapping
-            episodes automatically gave 982 events at zero tolerance and 614 at
-            six hours, too sensitive for the primary unit of a site. Merges are
-            declared by hand instead. There are very few, and a merged event says
-            so at the top of its page.</p>
+    <h3>Places</h3>
+    <p>The source files a location as a county or as a forecast zone. The type
+    depends on the event type. Counties alone lose most winter events, heat
+    events, and wind events. This site uses both types, and 12 codes in total.</p>
+    <p>Queens was one zone. It then became Northern Queens and Southern Queens.
+    Thus Queens can occur two times in one episode, and geography below the
+    borough level exists for Queens alone in the later period. The borough is
+    the only correct level for the full record.</p>
+    <p>New York Harbor is inside the waters of the City. This site carries it as
+    its own place. It does not carry the adjacent marine zones.</p>
+    <p>This site joins on codes, never on names. The same marine zone occurs as
+    <code>NEW YORK HARBOR</code> and as <code>New York Harbor</code> in
+    different years.</p>
 
-            <h3>Where New York City is</h3>
-            <p>The source files a location as a county or a forecast zone,
-            depending on the event type. Counties alone lose most winter, heat and
-            wind events. Both are used, twelve codes in all.</p>
-            <p>Queens was one zone and later became Northern and Southern Queens,
-            so Queens can appear twice in one episode and sub-borough geography
-            exists for Queens alone in the later period. Borough is the only grain
-            honest across the whole record. New York Harbor is inside the city's
-            waters and is carried as its own place; neighbouring marine zones are
-            not.</p>
-            <p>Codes are joined on, never names. The same marine zone appears as
-            both <code>NEW YORK HARBOR</code> and <code>New York Harbor</code> in
-            different years.</p>
-
-            <h3>The hazard names</h3>
-            <p>The source publishes 26 event types for New York City, several of
-            them marine twins of a land type. They fold into eighteen hazard
-            values, and that folding is this project's only change to the
-            vocabulary. An unmapped source type fails the build rather than
-            falling into an "other" bucket.</p>
-            <p>There is no layer above those eighteen. An earlier version grouped
-            them into Water, Winter, Temperature and Wind, which no source
-            publishes and which filed drought under Temperature. The groups and
-            their colors are gone. The explorer lists the hazard values with the
-            number of events holding each.</p>
-          </div>
-        </section>
-
-        <section class="section" id="numbers" aria-labelledby="numbers-h">
-          <h2 id="numbers-h">Where the numbers come from</h2>
-          <div class="prose">
-            <h3>The event record</h3>
-            <p>NOAA Storm Events, 1950 to the present. Narratives, hazard types,
-            death and injury counts and damage estimates are the Weather Service's
-            own. All event types have been recorded only since 1996; before that
-            the database holds tornado, hail and wind alone. An event page before
-            1996 says so.</p>
-
-            <h3>Weather</h3>
-            <p>Daily summaries from the Global Historical Climatology Network at
-            Central Park, LaGuardia, John F. Kennedy and Newark.</p>
-            <ul>
-              <li>A high or a low is the most extreme single daily reading at one
-              station, with the station and date beside it. Not a citywide figure,
-              not an average.</li>
-              <li>Rainfall and snowfall totals are summed at the wettest single
-              station, never across stations, which would count one storm four
-              times. The note says how many days of the window that station
-              reported.</li>
-              <li>The wind figure is the fastest two-minute wind, GHCN element
-              WSF2. It is not a gust. Peak gust is published separately as WSFG
-              and these four stations do not report it.</li>
-              <li>Daily rather than hourly summaries: the hourly files run about
-              seven megabytes per station-year, roughly two gigabytes here, for
-              measures the site reports as event peaks anyway. The cost is that
-              rainfall rate and heat index cannot be derived, so they are not
-              offered.</li>
-            </ul>
-
-            <h3>Water levels</h3>
-            <p>NOAA tide gauge readings at The Battery, on the mean lower low
-            water datum, in Coordinated Universal Time. Storm surge is not
-            published as a measurement: it is the observed level minus the
-            predicted tide, calculated here and labeled as derived everywhere it
-            appears.</p>
-            <p>Water levels are read only where a coastal hazard is on the event.
-            An inland heat wave has no tide panel, and its comparison cell says
-            "not read here" rather than sitting blank.</p>
-
-            <h3>Radar</h3>
-            <p>Composite reflectivity tiles from the Iowa Environmental Mesonet at
-            Iowa State University. Two products cover different halves of the
-            record and the site names the one it is showing. This is a national
-            composite, not one radar's view of the city.</p>
-            <p>Tiles are read live from the archive rather than copied, so the
-            radar panel depends on another service answering. When it does not,
-            the panel says so: a missing reflectivity layer is not clear weather.
-            The frame step widens for long events, so a two-week drought does not
-            request thousands of tiles.</p>
-
-            <h3 id="assistance">Federal assistance</h3>
-            <p><b>Assistance is obligated against a declared disaster, not against
-            a storm.</b> A declaration has its own incident period and can cover
-            several events here: DR-1083 is matched to fourteen. The same total
-            then appears on each of their pages, because that is what the source
-            publishes. It is not fourteen storms' worth of money.</p>
-            <p>So: no page ranks or sorts events by assistance, the explorer
-            carries a count of declarations rather than a column of dollars, every
-            assistance figure prints the declaration it belongs to and how many
-            events share it, and the comparison sheet groups those rows under what
-            they are obligated against.</p>
-            <ul>
-              <li>Declarations are matched on overlapping incident period,
-              restricted to weather incident types and to periods short enough to
-              be about one storm. Without that restriction the COVID-19
-              declarations, whose incident period runs 1,207 days, attached
-              billions to every storm for three years. The build now fails if a
-              long-period declaration is attached.</li>
-              <li>Public assistance is the federal share obligated for New York
-              City counties. Money committed, not money spent, and not a measure
-              of loss. Obligations continue for years, so a total is true only as
-              at the build date.</li>
-              <li>Housing assistance is the Individuals and Households Program
-              amount approved for New York City ZIP codes. Owners and renters are
-              separate programmes covering separate populations; the site sums
-              them and says so.</li>
-              <li>Flood insurance claims are different in kind. A claim carries a
-              date of loss, so it joins to the event window itself, and claims
-              exist for events that were never declared.</li>
-            </ul>
-
-            <h3>Consequences, and their windows</h3>
-            <p>311 service requests and police collision reports. The windows are
-            not the same and the site does not pretend they are. 311 counts run
-            over the event window and the following day, because a complaint about
-            a storm is often filed the next morning. Collisions are timestamped
-            when they happened, so they are counted inside the window only. Flood
-            insurance claims follow the 311 rule. Each panel states the window it
-            used.</p>
-            <p>311 is eight datasets, split by period, and the complaint
-            vocabulary moves between them. Counts are fetched as daily aggregates
-            by borough rather than as rows. There is no 311 record before 2004.</p>
-            <p>These counts measure reporting as well as impact. A neighbourhood
-            that calls 311 more will appear to flood more.</p>
-
-            <h3>Dollars</h3>
-            <p>Every dollar figure appears twice, as published and adjusted, in
-            <span id="base-year"></span> dollars, using the Bureau of Labor
-            Statistics consumer price index for New York-Newark-Jersey City,
-            series <code id="cpi-series"></code>. The metropolitan series is used
-            rather than the national one, which understates a New York loss.</p>
-          </div>
-        </section>
-
-        <section class="section" id="sources" aria-labelledby="src-h">
-          <h2 id="src-h">Sources</h2>
-          <p class="val-note">Generated from the pipeline's own manifest, so this
-          table cannot credit a source the build did not read.</p>
-          <div class="table-wrap" id="sources-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th scope="col">Source</th><th scope="col">Grain</th>
-                  <th scope="col">Coverage</th><th scope="col">Caveat</th>
-                </tr>
-              </thead>
-              <tbody id="sources-body"></tbody>
-            </table>
-          </div>
-        </section>
-
-        <section class="section" id="not-here" aria-labelledby="gap-h">
-          <h2 id="gap-h">What is not here</h2>
-          <div class="prose">
-            <p>Four capabilities in the city's tool could not be rebuilt from
-            public data. They are absent from every event, for the same reason
-            each time, so they are set out once here rather than repeated under
-            nine hundred events as though each had its own gap.</p>
-            <ul>
-              <li><b>School attendance.</b> Daily present, absent and released
-              counts by school are supplied to the city directly and are not
-              published. The existing tool shows 0 per cent absent for Hurricane
-              Sandy, when schools were closed for a week.</li>
-              <li><b>Power outages.</b> Utilities report to the New York State
-              Department of Public Service under a data sharing agreement. No
-              public historical series exists at borough level or finer.</li>
-              <li><b>Sanitation operations.</b> Salt usage and plow data are
-              public. Collection tonnage and equipment deployment are not.
-              Publishing two of six measures under one heading would mislead.</li>
-              <li><b>Subway ridership.</b> Daily public figures begin in 2020.
-              Nothing public reproduces station-level ridership earlier.</li>
-            </ul>
-            <p>Also absent: events before 1950, which the city's tool offers back
-            to 1785 from a source this project has not identified; flood sensors,
-            which began around 2021; air quality, published at county-day grain,
-            coarser than an event chart would imply; and NYCEM activation records,
-            which are operational and unpublished.</p>
-
-            <h3>Known discrepancies</h3>
-            <p>The city's tool reports 2,431 events. The New York City land
-            records in Storm Events number 2,097, and adding the New York Harbor
-            marine zone gives 2,392. The remaining 39 are unaccounted for and are
-            consistent with, but not confirmed as, entries from before 1950.</p>
-            <p>For Hurricane Sandy, the Storm Events records inside the event
-            window carry 45 direct deaths. The city's tool reports 43. Both come
-            from somewhere defensible. This site shows the figure its own source
-            publishes and names the difference rather than reconciling it
-            silently.</p>
-          </div>
-        </section>
-
-        <section class="section" id="build" aria-labelledby="build-h">
-          <h2 id="build-h">How this is built</h2>
-          <p class="val-note">Eight sources, five Python stages, one archive. The
-          diagram is generated from the same configuration the pipeline runs on.
-          <a href="dataflow.html">Open the interactive version</a>.</p>
-          <p><img src="dataflow-annotated.svg" width="100%"
-               alt="Data flow: eight sources feed a five-stage pipeline governed by pipeline/00_config.py, which writes JSON and CSV outputs that the static site reads. Radar tiles are fetched live in the browser and bypass the pipeline entirely."></p>
-          <div class="prose">
-            <p>Five stages, using the Python standard library. No install step, no
-            virtual environment. Then static HTML, CSS and JavaScript with no
-            framework and no build step, served as files on GitHub Pages.</p>
-            <ul>
-              <li><code>01_fetch</code> downloads each source and checks that what
-              arrived is what the next stage needs. A moved NOAA file and a FEMA
-              outage both answer HTTP 200 with an HTML error page.</li>
-              <li><code>02_normalize</code> produces the canonical tables: event
-              rows, events, station-days, track positions.</li>
-              <li><code>03_enrich</code> attaches 311 counts, collisions, water
-              levels and federal assistance. The only stage that returns to the
-              network after the event list exists.</li>
-              <li><code>04_validate</code> tests the grains rather than trusting
-              them, checks referential integrity in both directions, and fails
-              rather than warns when a figure would be wrong.</li>
-              <li><code>05_export</code> writes the site data and the downloads
-              into a staging directory and moves them into place in one step. It
-              refuses to run if validation failed, so a bad build leaves the
-              published files untouched.</li>
-            </ul>
-            <p>Every tunable value, including source URLs, the zone and county
-            mapping, the hazard vocabulary and the validation thresholds, lives in
-            <code>pipeline/00_config.py</code>. Failures stop the build and never
-            reach this page. What follows is what the last build noticed and
-            allowed.</p>
-            <div id="warnings"></div>
-          </div>
-        </section>
-      </div>
-
-      <nav class="rail" aria-label="On this page">
-        <p class="eyebrow">On this page</p>
-        <ol id="rail-list"></ol>
-      </nav>
+    <h2 id="sources">Sources</h2>
+    <p class="val-note">This table comes from the manifest of the pipeline. Thus
+    it cannot credit a source that the build did not read.</p>
+    <div class="table-wrap" id="sources-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Source</th><th scope="col">Grain</th>
+            <th scope="col">Coverage</th><th scope="col">Caveat</th>
+          </tr>
+        </thead>
+        <tbody id="sources-body"></tbody>
+      </table>
     </div>
+
+    <h3>The event record</h3>
+    <p>NOAA Storm Events, from 1950 to the present day. The narratives, the
+    hazard types, the death counts, the injury counts, and the damage estimates
+    are the data of the Weather Service.</p>
+    <p>The database holds each event type only from 1996. Before 1996 it holds
+    tornado, hail, and wind alone. An event page before 1996 tells you this.</p>
+
+    <h3>Weather</h3>
+    <p>Daily summaries from the Global Historical Climatology Network, at
+    Central Park, LaGuardia, John F. Kennedy, and Newark.</p>
+    <ul>
+      <li>A high or a low is the most extreme daily reading at one station. The
+      station and the date are with it. It is not a citywide figure and not an
+      average.</li>
+      <li>This site adds the rainfall totals and the snowfall totals at the
+      wettest station. It never adds them across stations, because that counts
+      one storm four times. The note gives the number of days that the station
+      reported.</li>
+      <li>The wind figure is the fastest two-minute wind, GHCN element WSF2. It
+      is not a gust. The peak gust is element WSFG, and these four stations do
+      not report it.</li>
+      <li>This site uses daily summaries, not hourly summaries. The hourly files
+      are about seven megabytes for each station-year, or about two gigabytes
+      here. The site reports these measures as event peaks. The cost of this
+      decision is that it cannot calculate the rainfall rate or the heat index.
+      Thus it does not offer them.</li>
+    </ul>
+
+    <h3>Water levels</h3>
+    <p>NOAA tide gauge readings at The Battery, on the mean lower low water
+    datum, in Coordinated Universal Time.</p>
+    <p>This site reads the water levels only if the event has a coastal hazard.
+    An inland heat wave has no tide panel, and its comparison cell says "not
+    read here". It is not blank.</p>
+
+    <h3>Radar</h3>
+    <p>Composite reflectivity tiles from the Iowa Environmental Mesonet at Iowa
+    State University. Two products cover different halves of the record, and the
+    site gives the name of the product that it shows. This is a national
+    composite. It is not the view of one radar of the city.</p>
+    <p>The browser reads the tiles live from the archive. It does not copy them.
+    Thus the radar panel depends on a different service. If that service does
+    not answer, the panel tells you. An absent reflectivity layer is not clear
+    weather.</p>
+    <p>The frame step becomes larger for a long event. Thus a drought of two
+    weeks does not request thousands of tiles.</p>
+
+    <h3>Federal assistance</h3>
+    <p><b>The federal government obligates assistance against a declared
+    disaster, not against a storm.</b> A declaration has its own incident
+    period, and it can cover several events on this site. DR-1083 matches 14
+    events. The same total then occurs on each of those 14 pages, because that
+    is what the source publishes. It is not the money of 14 storms.</p>
+    <p>For this reason, no page ranks or sorts events by assistance. The
+    explorer carries a count of declarations, not a column of dollars. Each
+    assistance figure gives its declaration and the number of events that share
+    it. The comparison sheet groups those rows under the declaration.</p>
+    <ul>
+      <li>This site matches a declaration on an overlapping incident period. It
+      uses weather incident types only, and periods short enough for one storm.
+      Without that limit, the COVID-19 declarations attach billions of dollars
+      to each storm for three years. Their incident period is 1,207 days. The
+      build now fails if it attaches a declaration with a long period.</li>
+      <li>Public assistance is the federal share obligated for the counties of
+      New York City. It is money committed, not money spent, and it is not a
+      measure of loss. Obligations continue for years. Thus a total is correct
+      only on the build date.</li>
+      <li>Housing assistance is the amount that the Individuals and Households
+      Program approved for the ZIP codes of New York City. Owners and renters
+      are separate programs for separate populations. This site adds them
+      together and tells you.</li>
+      <li>A flood insurance claim is different. A claim has a date of loss. Thus
+      it joins to the event window. Claims also exist for events with no
+      declaration.</li>
+    </ul>
+
+    <h3>Consequences</h3>
+    <p>311 service requests and police collision reports.</p>
+    <p>311 is eight datasets, divided by period, and the complaint vocabulary
+    changes between them. This site gets the counts as daily totals by borough,
+    not as rows. There is no 311 record before 2004.</p>
+    <p>These counts measure the reporting as well as the effect. A neighborhood
+    that calls 311 more often appears to flood more often.</p>
+
+    <h2 id="calculation">Calculation</h2>
+
+    <h3>Hazard names</h3>
+    <p>The source publishes 26 event types for New York City. Several of them
+    are marine versions of a land type. This site folds them into 18 hazard
+    values. That fold is the only change of this project to the vocabulary. If a
+    source type has no mapping, the build fails. It does not put the type into
+    an "other" group.</p>
+    <p>There is no level above those 18 values. An earlier version grouped them
+    into Water, Winter, Temperature, and Wind. No source publishes those groups,
+    and they put drought under Temperature. The groups and their colors are
+    removed. The explorer lists the hazard values with the number of events for
+    each one.</p>
+
+    <h3>Consequence windows</h3>
+    <p>The windows are not the same for each source, and this site does not
+    treat them as the same.</p>
+    <ul>
+      <li>311 counts run over the event window and the next day, because a
+      person often files a complaint about a storm on the next morning.</li>
+      <li>A collision has a timestamp of the event itself. Thus this site counts
+      collisions inside the window only.</li>
+      <li>A flood insurance claim follows the 311 rule.</li>
+    </ul>
+    <p>Each panel gives the window that it used.</p>
+
+    <h3>Storm surge</h3>
+    <p>The source does not publish storm surge as a measurement. This site
+    calculates it: the observed level minus the predicted tide. It labels the
+    result as derived in each place that the result occurs.</p>
+
+    <h3>Dollars</h3>
+    <p>Each dollar figure occurs two times: as published, and adjusted to
+    <span id="base-year"></span> dollars. This site adjusts with the consumer
+    price index of the Bureau of Labor Statistics for New York-Newark-Jersey
+    City, series <code id="cpi-series"></code>. It uses the metropolitan series,
+    not the national series. The national series is too low for a loss in New
+    York.</p>
+
+    <h2 id="absences">Absences</h2>
+    <p>This site never shows a number that no person measured as a zero. The
+    tool that this project rebuilds prints <code>0 % absent</code> for school
+    attendance during Hurricane Sandy. Schools were closed for a week.</p>
+    <p>Each measure carries one of five statuses. The statuses go into the
+    downloads as their own columns. A spreadsheet with an empty cell for
+    "nothing happened" and also for "no person looked" has the same fault in a
+    different container.</p>
+    <dl class="panel" id="status-list" style="max-width:36rem"></dl>
+    <p class="val-note">Not collected is the usual case, not the rare case.
+    Collision records start in July 2012 and 311 records start in 2004, against
+    an event record that starts in 1958. The build fails if no measure in it is
+    marked not applicable, because that result means the site lost the
+    difference.</p>
+
+    <h2 id="limits">Limits</h2>
+    <p>This project could not rebuild four capabilities of the tool of the City
+    from public data. They are absent from each event, for the same reason each
+    time. Thus this page gives them one time. It does not repeat them under 900
+    events.</p>
+    <ul>
+      <li><b>School attendance.</b> Schools supply the daily present counts,
+      absent counts, and released counts to the City directly. The City does not
+      publish them.</li>
+      <li><b>Power outages.</b> Utilities report to the New York State
+      Department of Public Service under a data sharing agreement. No public
+      historical series exists at the borough level or below it.</li>
+      <li><b>Sanitation operations.</b> Salt usage and plow data are public.
+      Collection tonnage and equipment deployment are not public. Two measures
+      of six under one heading would mislead you.</li>
+      <li><b>Subway ridership.</b> Daily public figures start in 2020. No public
+      source gives station-level ridership before that year.</li>
+    </ul>
+    <p>These things are also absent: events before 1950, which the tool of the
+    City offers back to 1785 from a source that this project cannot identify;
+    flood sensors, which start in approximately 2021; air quality, which the
+    City publishes at the county-day level, and which is coarser than an event
+    chart implies; and NYCEM activation records, which are operational and
+    unpublished.</p>
+
+    <h3>Known differences</h3>
+    <p>The tool of the City reports 2,431 events. The New York City land records
+    in Storm Events are 2,097. With the New York Harbor marine zone, they are
+    2,392. This project cannot account for the other 39. That number agrees with
+    entries from before 1950, but no source confirms it.</p>
+    <p>For Hurricane Sandy, the Storm Events records inside the event window
+    carry 45 direct deaths. The tool of the City reports 43. Both figures have a
+    defensible source. This site shows the figure of its own source and gives
+    the difference. It does not reconcile the two figures quietly.</p>
+
+    <h2 id="downloads">Downloads</h2>
+    <p class="val-note">One pass writes the site, the downloads, and the file
+    for each event, from the same objects. Thus they cannot disagree.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Dataset</th>
+            <th scope="col">What it contains</th>
+            <th scope="col">File</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="name"><a href="downloads/nyc-hazard-historian-events.csv">Events</a></td>
+            <td class="wrap-cell"><span class="muted">One row for each event,
+            <span id="n-events"></span> in total. Each headline measure has a
+            status column beside it.</span></td>
+            <td><code>nyc-hazard-historian-events.csv</code></td>
+          </tr>
+          <tr>
+            <td class="name"><a href="downloads/nyc-hazard-historian-evidence.csv">Evidence</a></td>
+            <td class="wrap-cell"><span class="muted">One row for each National
+            Weather Service record, <span id="n-rows"></span> in total. This is
+            the grain that the source publishes. Join on
+            <code>event_id</code>.</span></td>
+            <td><code>nyc-hazard-historian-evidence.csv</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="val-note" style="margin-top:1rem">Built <span id="built"></span>.</p>
+
+    <h3>JSON</h3>
+    <p>Static JSON. There is no API. Static files answer the same questions at
+    no running cost, and they cannot fail on their own.</p>
+    <ul>
+      <li><a href="data/index.json">data/index.json</a>, the search index</li>
+      <li><a href="data/meta.json">data/meta.json</a>, sources and vocabularies</li>
+      <li><code>data/events/{event_id}.json</code>, one file for each event</li>
+    </ul>
+
+    <h2 id="dictionary">Dictionary</h2>
+    <dl class="glossary">
+      <dt>Event</dt>
+      <dd>One episode in the NOAA Storm Events Database. An episode is one
+      weather system. It is the primary unit of this site.</dd>
+
+      <dt>Episode</dt>
+      <dd>The group that the Weather Service makes from its own rows. One
+      episode holds one or more records.</dd>
+
+      <dt>Evidence row</dt>
+      <dd>One record in the Storm Events Database: one hazard type, in one
+      place, over one time window. An event holds one or more of them.</dd>
+
+      <dt>Hazard</dt>
+      <dd>One of the 18 values that this site folds the 26 source event types
+      into. There is no group above these values.</dd>
+
+      <dt>Status</dt>
+      <dd>The word beside a measure that tells you the type of the value. Each
+      measure has one of five statuses, and each status has its own column in
+      the downloads.</dd>
+
+      <dt>Derived</dt>
+      <dd>A value that this site calculates, and that no source publishes. Storm
+      surge is derived. This site labels each derived value.</dd>
+
+      <dt>Declaration</dt>
+      <dd>A federal disaster declaration, with its own incident period. The
+      federal government obligates assistance against a declaration, not against
+      an event. One declaration can cover several events.</dd>
+    </dl>
+
+    <h2 id="build">Build</h2>
+    <p class="val-note">Eight sources, five Python stages, one archive. The
+    diagram comes from the same configuration that the pipeline runs on.</p>
+    <img class="dataflow-img" src="dataflow-annotated.svg"
+         alt="Data flow: eight sources feed a five-stage pipeline governed by pipeline/00_config.py, which writes JSON and CSV outputs that the static site reads. Radar tiles are fetched live in the browser and bypass the pipeline entirely.">
+    <p>The five stages use the Python standard library. There is no install step
+    and no virtual environment. The site is then static HTML, CSS, and
+    JavaScript, with no framework and no build step, served as files on GitHub
+    Pages.</p>
+    <ul>
+      <li><code>01_fetch</code> downloads each source. It then checks that the
+      result is what the next stage needs. A moved NOAA file and a FEMA outage
+      both answer HTTP 200 with an HTML error page.</li>
+      <li><code>02_normalize</code> makes the canonical tables: event rows,
+      events, station-days, and track positions.</li>
+      <li><code>03_enrich</code> attaches the 311 counts, the collisions, the
+      water levels, and the federal assistance. It is the only stage that
+      returns to the network after the event list exists.</li>
+      <li><code>04_validate</code> tests the grains. It does not trust them. It
+      checks referential integrity in both directions, and it fails if a figure
+      is wrong. It does not warn.</li>
+      <li><code>05_export</code> writes the site data and the downloads into a
+      staging directory. It then moves them into place in one step. It does not
+      run if validation failed. Thus a bad build does not change the published
+      files.</li>
+    </ul>
+    <p>The file <code>pipeline/00_config.py</code> holds each tunable value:
+    the source URLs, the zone and county mapping, the hazard vocabulary, and the
+    validation thresholds. A failure stops the build, and it never reaches this
+    page. The list below is what the last build found and allowed.</p>
+    <div id="warnings"></div>
+
+    <h2 id="reuse">Reuse</h2>
+    <p>The compiled data is free to use, but you must give attribution. The
+    source data carries the terms of the agencies that publish it. If you
+    republish a figure, carry its status and its period with it.</p>
+    <p>If you find an error,
+    <a href="https://github.com/jaramana/hazardhistorian.publicworks.nyc/issues">report
+    it</a>.</p>
 </div>
 </main>
 

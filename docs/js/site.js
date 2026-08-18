@@ -301,16 +301,19 @@ HH.footer = function (meta) {
   el.className = 'footer';
   el.innerHTML =
     '<div class="wrap"><div class="footer-grid">' +
+      // dataflow.html is deliberately unlinked. The page stays published and
+      // works for anyone who has its address, but nothing on the site points
+      // at it and it carries a noindex.
       '<div><h4>Views</h4><ul>' + links([
         ['explore.html', 'Explore events'],
-        ['compare.html', 'Compare events'],
-        ['dataflow.html', 'Data flow']
+        ['compare.html', 'Compare events']
       ]) + '</ul></div>' +
+      // Pages, not sections. Four entries that all opened method.html at a
+      // different anchor read as four destinations and were one. One of the
+      // anchors, #fields, did not exist on the page at all.
       '<div><h4>Reference</h4><ul>' + links([
-        ['method.html#downloads', 'Download the data'],
-        ['method.html', 'Method and limits'],
-        ['method.html#fields', 'Data dictionary'],
-        ['method.html#sources', 'Sources and freshness']
+        ['method.html', 'Method'],
+        ['about.html', 'About']
       ]) + '</ul></div>' +
       '<div><h4>Sources</h4><ul>' + links([
         ['https://www.ncei.noaa.gov/products/storm-events-database', 'NOAA Storm Events'],
@@ -318,25 +321,31 @@ HH.footer = function (meta) {
         ['https://tidesandcurrents.noaa.gov/', 'NOAA Tides and Currents'],
         ['https://www.fema.gov/about/openfema/data-sets', 'OpenFEMA']
       ]) + '</ul></div>' +
+      // Code, not pages. About lives in Reference and was listed twice.
       '<div><h4>Project</h4><ul>' + links([
-        ['about.html', 'About this site'],
         [HH.REPO, 'Source on GitHub'],
-        [HH.REPO + '/issues', 'Report an error'],
-        // publicworks.nyc is the index the other projects are filed under.
-        // A link at the foot is the whole of its presence here.
-        ['https://publicworks.nyc', 'publicworks.nyc']
+        [HH.REPO + '/issues', 'Report an error']
       ]) + '</ul></div>' +
     '</div>' +
-    '<p class="built">Built ' + HH.date(meta.built, { long: true }) + '. ' +
-      HH.num(meta.events) + ' events, ' + meta.coverage.first + ' to ' +
-      meta.coverage.last + '.</p>' +
-    '<p class="colophon"><strong>An independent project.</strong> Not ' +
-      'affiliated with, endorsed by or produced by New York City Emergency ' +
-      'Management or the City of New York. It reconstructs a public record ' +
-      'from published federal and city sources. Public data, public method, ' +
-      'built with Python and ' +
+    // No build line here. The status line under the page title already gives
+    // the build date, the event count and the coverage, and saying it twice on
+    // one page is not a second source.
+
+    // The disclaimer, word for word as it appears in the home page banner.
+    // One sentence, in one place in the source of each project, so the two can
+    // never drift apart. Only the agency changes between projects.
+    '<p class="colophon"><strong>This is not an official product.</strong> ' +
+      'It is an independent initiative, not affiliated with, endorsed by, or ' +
+      'produced by <a href="https://www.nyc.gov/site/em/ready/hazard-mitigation.page">' +
+      'New York City Emergency Management</a> or the City of New York. Please ' +
+      'refer to them for authoritative information.</p>' +
+    '<p class="built-with">Public data, public method, built with Python and ' +
       '<span class="wink" title="Four kinds of absence, and not one of them is a zero.">' +
       'strong opinions about empty cells</span>.</p>' +
+    // The portfolio mark, below everything and outside the columns. It is a
+    // filing cabinet, not a section of this site, so it is announced once at
+    // the foot rather than filed among the site's own pages.
+    '<p class="portfolio">A <a href="https://publicworks.nyc">publicworks.nyc</a> project</p>' +
     '</div>';
 };
 
@@ -363,7 +372,7 @@ HH.statusline = function (meta) {
   const txt = meta.coverage.first + '–' + meta.coverage.last + ' · ' +
     HH.num(meta.events) + ' events · ' +
     HH.num(meta.event_rows) + ' Weather Service records · built ' +
-    HH.date(meta.built, { long: true });
+    HH.buildDate(meta.built);
   nodes.forEach(n => { n.textContent = txt; });
 };
 
@@ -389,6 +398,39 @@ HH.masthead = function () {
 
 /* ---- Page bootstrap ------------------------------------------------ */
 
+/* Land on the anchor the reader actually asked for.
+
+   The browser jumps to #downloads while the page is still the markup: the
+   source table, the status list and the warnings have not been rendered yet.
+   Every row those add above the target moves it, so the position the browser
+   chose stops being the heading in the link. Re-apply the hash once the page
+   is built, and without the smooth behaviour, so it lands exactly rather than
+   animating toward a target that is still moving. */
+HH.restoreHash = function () {
+  if (!location.hash) return;
+  const target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+  if (!target) return;
+
+  // Stop the moment the reader takes over. Re-applying the hash under someone
+  // who has already started scrolling is worse than landing in the wrong place.
+  let taken = false;
+  const yield_ = () => { taken = true; };
+  ['wheel', 'touchstart', 'keydown'].forEach(function (ev) {
+    window.addEventListener(ev, yield_, { once: true, passive: true });
+  });
+
+  // setTimeout rather than requestAnimationFrame: rAF is throttled in a
+  // background tab, so a link opened in one would never be corrected.
+  const land = function () {
+    if (taken) return;
+    target.scrollIntoView({ behavior: 'instant', block: 'start' });
+  };
+  setTimeout(land, 0);
+  // A second pass after the images and the SVG have settled, in case anything
+  // above the target changed height on load.
+  window.addEventListener('load', function () { setTimeout(land, 0); }, { once: true });
+};
+
 HH.start = function (run) {
   document.addEventListener('DOMContentLoaded', function () {
     HH.masthead();
@@ -396,6 +438,7 @@ HH.start = function (run) {
       HH.footer(meta);
       HH.statusline(meta);
       run(meta);
+      HH.restoreHash();
     }).catch(err => {
       const main = document.querySelector('main');
       if (main) HH.fail(main, err, 'The site metadata');

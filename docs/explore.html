@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Explore events | NYC Hazard Historian</title>
+<title>Explore — NYC Hazard Historian</title>
 <meta name="description" content="Filter New York City hazard events by date, hazard, borough and measurable thresholds. Every query is a link you can share.">
 <link rel="stylesheet" href="css/site.css">
 </head>
@@ -13,10 +13,10 @@
 <header data-chrome="masthead"></header>
 
 <main id="main-content">
-<div class="wrap">
-    <h1>Explore events</h1>
-    <p class="lede">The whole query lives in the address bar, so any result set on
-    this page is a link.</p>
+  <section class="wrap console">
+    <h1 class="console-h1">Explore events</h1>
+    <p class="console-sub">The whole query lives in the address bar, so any result
+    set on this page is a link.</p>
 
     <form class="query" id="query-form" aria-labelledby="query-heading">
       <h2 class="visually-hidden" id="query-heading">Query</h2>
@@ -67,7 +67,9 @@
         <button type="button" class="btn btn-quiet btn-small" id="download">Download these results</button>
       </div>
     </form>
+  </section>
 
+  <section class="wrap">
     <div class="result-head">
       <h2 class="count" id="count">Loading</h2>
     </div>
@@ -75,7 +77,7 @@
 
     <p class="loading" id="loading">Loading the event index.</p>
     <div id="results"></div>
-</div>
+  </section>
 </main>
 
 <footer data-chrome="footer"></footer>

@@ -143,6 +143,14 @@ HH.date = function (iso, opts) {
   return d.toLocaleDateString('en-GB', fmt);
 };
 
+/* The build date, which is metadata about the site rather than a date in the
+   record. The Pay Gap and Schools Finder both print it as the plain ISO date
+   the pipeline wrote, so this does too. HH.date stays for event dates, which
+   are read as prose and have no equivalent on the other two sites. */
+HH.buildDate = function (iso) {
+  return iso ? String(iso).slice(0, 10) : '';
+};
+
 HH.dateTime = function (iso) {
   if (!iso) return '';
   const d = new Date(iso.replace(' ', 'T'));

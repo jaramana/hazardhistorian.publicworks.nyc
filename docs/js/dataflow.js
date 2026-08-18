@@ -175,7 +175,7 @@ const FLOW = {
       desc: 'One event in full, loaded on demand. Measures first, the source narrative behind a disclosure, and a note when the event is a merge.' },
     { name: 'Compare', href: 'compare.html',
       desc: 'Events side by side, on the measures they can both support.' },
-    { name: 'Method and data', href: 'method.html',
+    { name: 'Method', href: 'method.html',
       desc: 'How every figure was produced, what each source publishes, and the CSV extracts.' },
     { name: 'Radar overlay', href: null, bypass: true,
       desc: 'Reflectivity tiles read live from the Iowa Environmental Mesonet and drawn over MapLibre GL. The only data on the site that never passes through the pipeline.' }

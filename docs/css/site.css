@@ -50,11 +50,16 @@
   --glass-blur:   saturate(140%) blur(14px);
   --glass-edge:   inset 0 1px 0 rgba(255, 255, 255, .9);
 
-  --shadow: 0 1px 2px rgba(16, 22, 32, .05), 0 10px 26px -16px rgba(16, 22, 32, .28);
+  /* Blur and spread follow The Pay Gap's shadow scale (0 8px 24px -12px, .18
+     alpha) so the two sites cast the same weight of shadow; only the rgb
+     base changes, to this site's own cooler ink. */
+  --shadow: 0 1px 2px rgba(16, 22, 32, .05), 0 8px 24px -12px rgba(16, 22, 32, .18);
   --shadow-tight: 0 1px 2px rgba(16, 22, 32, .06);
 
-  --r:    4px;
-  --r-lg: 6px;
+  /* Matches The Pay Gap's and Schools Finder's radius family: 8px for
+     controls and note-style panels, 10px for cards, tables and query. */
+  --r:    8px;
+  --r-lg: 10px;
 
   --measure: 34rem;
   --wide:    72rem;
@@ -94,6 +99,11 @@ body {
      the publicworks.nyc README records. */
   font: 400 1.0625rem/1.6 var(--sans);
   font-feature-settings: "tnum" 1;
+  /* Both sister sites set this. Without it macOS renders the page with
+     subpixel antialiasing, which thickens every stroke: the nav links read a
+     weight heavier than the identical 500 they are set at on the other two
+     sites. This is the whole of that difference. */
+  -webkit-font-smoothing: antialiased;
 }
 
 /* The heading scale is The Pay Gap's and Schools Finder's, so a reader moving
@@ -114,20 +124,28 @@ a:hover { color: var(--accent-ink); }
 }
 
 .skip {
-  position: absolute; left: -9999px; top: 0; z-index: 100;
+  position: absolute; left: -9999px;
   background: var(--accent); color: var(--on-accent);
-  padding: .6rem 1rem; border-radius: 0 0 var(--r) 0;
+  padding: .6rem 1rem; z-index: 100;
 }
-.skip:focus { left: 0; }
+.skip:focus { left: .5rem; top: .5rem; }
 
 .visually-hidden {
   position: absolute; width: 1px; height: 1px; overflow: hidden;
   clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
 }
 
-/* The one repeated typographic device: a small ruled label. It names a
-   section, a grain, a footer column. Uppercase at this size stays legible and
-   keeps a heading and its metadata visibly different in kind. */
+/* The suite's shared utilities. Both sister sites carry these; this one did
+   not, so `class="statusline mono"` rendered in the sans face here and in the
+   monospace face on the other two. */
+.mono { font-family: var(--mono); font-size: .92em; }
+.muted { color: var(--ink-faint); }
+.hidden { display: none !important; }
+
+/* A small label above a list. It is the rail's heading and nothing else: it was
+   once a tagline over the home page title too, which neither sister site has
+   and which read as a strapline on an instrument. Uppercase at this size stays
+   legible and keeps a heading and its metadata visibly different in kind. */
 .eyebrow {
   display: block;
   font: 500 .7rem/1.4 var(--sans);
@@ -188,6 +206,18 @@ main { padding-bottom: 5rem; }
   max-width: none; letter-spacing: -.01em;
 }
 
+/* A ruled label opening a band, and the line of guidance under it. Copied from
+   The Pay Gap so a band on one home page opens the same way as on the others.
+   Note the existing `.section > h2 .hint` below is a different thing: an inline
+   qualifier inside an event-page heading. */
+.section-label {
+  font-size: .78rem; font-weight: 700; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--ink-faint);
+  margin: 3rem 0 .3rem; border-bottom: 1px solid var(--rule);
+  padding-bottom: .5rem;
+}
+.hint { font-size: .88rem; color: var(--ink-faint); margin: .6rem 0 1rem; }
+
 /* ---- Footer -----------------------------------------------------
    Columns and a closing colophon, the shape The Pay Gap and Schools Finder
    both use. The links here are the navigation in the same words, so a reader
@@ -211,8 +241,22 @@ main { padding-bottom: 5rem; }
 }
 .footer ul { list-style: none; padding: 0; margin: 0; }
 .footer li { margin-bottom: .25rem; }
-.footer .built { margin: 1.5rem 0 0; font-variant-numeric: tabular-nums; }
 .colophon { margin-top: 1.5rem; font-size: .82rem; }
+/* The build credit, quieter than the disclaimer above it. The colophon now
+   carries the suite's disclaimer verbatim and nothing else, so the voice that
+   used to ride along at the end of it lives here instead. */
+.built-with { margin: .5rem 0 0; font-size: .82rem; color: var(--ink-faint); }
+/* The portfolio mark, at the very foot and outside the link columns. Set
+   quieter than the colophon above it and separated by a rule: publicworks.nyc
+   is the cabinet these projects are filed in, not a section of this site, so
+   it is announced once and does not compete with the site's own navigation. */
+.portfolio {
+  margin: 1.75rem 0 0; padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+  font-size: .8rem; letter-spacing: .02em; color: var(--ink-faint);
+}
+.portfolio a { color: var(--ink-soft); text-decoration: none; font-weight: 600; }
+.portfolio a:hover { color: var(--accent); text-decoration: underline; }
 .colophon .wink { cursor: help; border-bottom: 1px dotted var(--rule-strong); }
 
 /* The standing caution. Schools Finder carries the same box in the same place,
@@ -220,7 +264,7 @@ main { padding-bottom: 5rem; }
    anyone acts on a figure in it. */
 .note-box {
   border-left: 3px solid var(--rule-strong); background: var(--paper-sunken);
-  padding: .85rem 1.05rem; border-radius: 0 var(--r) var(--r) 0;
+  padding: .85rem 1rem; border-radius: 0 var(--r) var(--r) 0;
   font-size: .89rem; color: var(--ink-soft); margin: 1.5rem 0; max-width: 46rem;
 }
 .note-box strong { color: var(--ink); }
@@ -229,6 +273,15 @@ main { padding-bottom: 5rem; }
 /* ---- Prose ------------------------------------------------------ */
 
 .prose { max-width: var(--measure); }
+
+/* A definition list for the terms the method page names. Copied from Schools
+   Finder so the dictionary reads the same on both sites. */
+.glossary { margin: 1.25rem 0 2rem; max-width: 44rem; }
+.glossary dt {
+  font-weight: 700; margin-top: 1.1rem; font-family: var(--mono);
+  font-size: .95rem;
+}
+.glossary dd { margin: .2rem 0 0; color: var(--ink-soft); }
 
 /* .prose on the same element as .wrap would shrink the wrap to the reading
    measure, and the wrap's auto margins would then center the whole column
@@ -242,7 +295,6 @@ main { padding-bottom: 5rem; }
   font: 400 .85em var(--mono); background: var(--paper-sunken);
   padding: .1em .35em; border-radius: 3px;
 }
-.lede { font-size: 1.06rem; color: var(--ink-soft); max-width: var(--measure); }
 
 /* ---- Controls --------------------------------------------------- */
 
@@ -408,6 +460,8 @@ tbody tr:last-child td { border-bottom: 0; }
 tbody tr:hover { background: var(--paper-sunken); }
 td.num, th.num { text-align: right; font-family: var(--mono); font-size: .85rem; white-space: nowrap; }
 th.num { text-align: right; }
+td.name, th.name { white-space: normal; min-width: 15rem; }
+td.wrap-cell { white-space: normal; min-width: 18rem; }
 
 th button.sort {
   font: inherit; text-transform: inherit; letter-spacing: inherit;
@@ -470,11 +524,16 @@ td[data-label="Places"] { min-width: 8rem; }
 /* ---- Panels ----------------------------------------------------- */
 
 .panels { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); }
+/* PLAIN PANEL — the suite's static box: an informational panel or an entry
+   point. Paper, one hairline, one soft lift, and the border takes the accent on
+   hover. Defined identically on all three sites. A result card is a different
+   object and carries the left bar instead; see .result-card on The Pay Gap. */
 .panel {
   background: var(--paper-raised); border: 1px solid var(--rule);
   border-radius: var(--r-lg); padding: .95rem 1.05rem;
   box-shadow: var(--shadow-tight);
 }
+a.panel:hover, .panel a:hover { border-color: var(--accent); }
 .panel > h3 { margin-bottom: .6rem; }
 .panel-wide { grid-column: 1 / -1; }
 
@@ -524,7 +583,12 @@ td[data-label="Places"] { min-width: 8rem; }
 
 /* ---- Event page ------------------------------------------------- */
 
+/* The event title is the suite's entity heading, the same treatment The Pay Gap
+   gives a title or agency and Schools Finder gives a school. It is smaller than
+   a page heading because the name it carries is often long and is set from the
+   record rather than written. */
 .event-head { margin-bottom: 1.25rem; }
+.event-head h1 { font-size: clamp(1.6rem, 3.4vw, 2.4rem); margin-bottom: .3rem; }
 .event-head .back { font-size: .85rem; display: inline-block; margin-bottom: .5rem; }
 .event-meta {
   display: flex; gap: .5rem 1.1rem; flex-wrap: wrap; align-items: center;
@@ -622,17 +686,20 @@ td[data-label="Places"] { min-width: 8rem; }
 
 /* ---- Home ------------------------------------------------------- */
 
-.hero { padding: .25rem 0 1.5rem; }
-.hero h1 { max-width: 22ch; }
-.hero .lede { margin-top: .6rem; }
+/* The home page opens with .console, the same block every other page in the
+   suite opens with, rather than a hero of its own. A landing page that sets
+   its title larger than the pages behind it is the thing that made this site
+   feel unrelated to its sisters. */
 .jump { display: grid; gap: .7rem; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); margin-top: 1.5rem; }
+/* PLAIN PANEL. The glass highlight that used to ride along here belonged to
+   the control chrome, not to a card, and no sister site has it. */
 .jump a {
   display: block; text-decoration: none; color: inherit;
   background: var(--paper-raised); border: 1px solid var(--rule);
   border-radius: var(--r-lg); padding: .8rem .95rem;
-  box-shadow: var(--shadow-tight), var(--glass-edge);
+  box-shadow: var(--shadow-tight);
 }
-.jump a:hover { border-color: var(--accent); background: var(--paper-raised); }
+.jump a:hover { border-color: var(--accent); }
 .jump .k { display: block; font-weight: 600; margin-bottom: .15rem; }
 .jump .d { font-size: .83rem; color: var(--ink-faint); }
 
@@ -641,8 +708,12 @@ td[data-label="Places"] { min-width: 8rem; }
 /* ---- Narrow screens --------------------------------------------- */
 
 @media (max-width: 46rem) {
-  /* The gutter matches .wrap, so the masthead and the content share an edge. */
-  main { padding: 1.25rem 1.25rem 2.5rem; }
+  /* main sets no padding of its own. It used to take 1.25rem on each side here,
+     on the reasoning that the gutter should match .wrap — but every band inside
+     main already carries .wrap, which supplies that gutter itself. The padding
+     was added on top of it, so below 46rem the content sat 1.25rem further in
+     than the masthead and the two edges visibly disagreed. Neither sister site
+     has the rule. */
   .filter-row { grid-template-columns: 1fr 1fr; }
   .filter-row > *:nth-last-child(2) { grid-column: 1 / -1; }
   .filter-row > *:last-child { grid-column: 1 / -1; }

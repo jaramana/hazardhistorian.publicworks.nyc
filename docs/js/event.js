@@ -129,7 +129,7 @@ function renderHead() {
   const title = el('h1', null, name);
   // Most events are unnamed, and a browser tab reading "Event" for nine hundred
   // of them makes a second open tab useless.
-  document.title = name + ' | NYC Hazard Historian';
+  document.title = name + ' — NYC Hazard Historian';
 
   const meta = el('div', { class: 'event-meta' });
   meta.appendChild(el('span', { class: 'event-date' },
@@ -376,7 +376,7 @@ function renderAssistance() {
   pa.appendChild(el('p', { class: 'val-note' },
     'Obligated to the declaration for New York City counties, not spent, and ' +
     'not a measure of loss. Obligations continue for years: this total is true ' +
-    'as at ' + HH.date(META.built, { long: true }) + ' and will grow.'));
+    'as at ' + HH.buildDate(META.built) + ' and will grow.'));
   pa.appendChild(HH.grain('fema-pa', META));
 
   const ia = el('section', { class: 'panel' });
@@ -387,7 +387,7 @@ function renderAssistance() {
   ia.appendChild(dl2);
   ia.appendChild(el('p', { class: 'val-note' },
     'Individuals and Households Program amounts approved for New York City ZIP ' +
-    'codes. Owners and renters are separate programmes covering separate ' +
+    'codes. Owners and renters are separate programs covering separate ' +
     'populations; this is their sum, and it is a declaration total.'));
   ia.appendChild(HH.grain(['fema-ia-owners', 'fema-ia-renters'], META));
 

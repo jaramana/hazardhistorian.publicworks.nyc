@@ -3,8 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Data flow | NYC Hazard Historian</title>
+<title>Data flow — NYC Hazard Historian</title>
 <meta name="description" content="An interactive map of how source records become the event archive: eight sources, five pipeline stages, and the rules each stage keeps.">
+<!-- Unlisted. Nothing on the site links here and search engines are asked not
+     to index it. The page stays published and working for anyone who has the
+     address, which is the whole of what it is for. -->
+<meta name="robots" content="noindex, nofollow">
 <link rel="stylesheet" href="css/site.css">
 <link rel="stylesheet" href="css/dataflow.css">
 </head>
@@ -24,12 +28,14 @@
 </header>
 
 <main id="main-content">
-<div class="wrap">
-    <h1>Data flow</h1>
-    <p class="lede">Eight public sources, five pipeline stages, one archive. Open
-    any stage to see what it does to the data and the rule it keeps. The counts
-    below are read from the current build, not written by hand.</p>
+  <section class="wrap console">
+    <h1 class="console-h1">Data flow</h1>
+    <p class="console-sub">Eight public sources, five pipeline stages, one archive.
+    Open any stage to see what it does to the data and the rule it keeps. The
+    counts below are read from the current build, not written by hand.</p>
+  </section>
 
+<div class="wrap">
     <div class="df-toolbar">
       <dl class="df-stats" id="df-stats" aria-live="polite">
         <div><dt>Events</dt><dd data-stat="events">—</dd></div>
@@ -111,11 +117,12 @@
 
 <footer class="footer">
   <div class="wrap">
-    <p class="colophon"><strong>An independent project.</strong> A rebuild from
-    public sources, not affiliated with New York City Emergency Management or
-    the City of New York. <a href="about.html">About</a>,
-    <a href="method.html#downloads">data and downloads</a>,
-    <a href="https://publicworks.nyc">publicworks.nyc</a>.</p>
+    <p class="colophon"><strong>This is not an official product.</strong> It is
+    an independent initiative, not affiliated with, endorsed by, or produced by
+    <a href="https://www.nyc.gov/site/em/ready/hazard-mitigation.page">New York
+    City Emergency Management</a> or the City of New York. Please refer to them
+    for authoritative information.</p>
+    <p class="portfolio">A <a href="https://publicworks.nyc">publicworks.nyc</a> project</p>
   </div>
 </footer>
 

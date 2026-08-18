@@ -20,7 +20,7 @@ function el(tag, attrs, text) {
 }
 
 HH.start(function (meta) {
-  document.getElementById('built').textContent = HH.date(meta.built, { long: true });
+  document.getElementById('built').textContent = HH.buildDate(meta.built);
   document.getElementById('n-events').textContent = HH.num(meta.events);
   document.getElementById('n-rows').textContent = HH.num(meta.event_rows);
   document.getElementById('base-year').textContent = meta.cpi.base_year;
@@ -53,7 +53,6 @@ HH.start(function (meta) {
   });
   HH.scrollable(document.getElementById('sources-wrap'),
     'Sources the build read');
-  HH.buildRail('rail-list');
 
   // Warnings the last build raised. Published rather than hidden, because a
   // warning a reader cannot see is a warning nobody acts on.
