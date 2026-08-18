@@ -421,14 +421,22 @@ HH.restoreHash = function () {
 
   // setTimeout rather than requestAnimationFrame: rAF is throttled in a
   // background tab, so a link opened in one would never be corrected.
+  // Re-land only while the target is still moving, and stop the moment it is
+  // not. HH.scrollable adds a scroll hint under a wide table and its
+  // ResizeObserver takes it away again once layout settles; that is a line of
+  // text appearing and disappearing above the target, and landing before it
+  // settles leaves the heading just off the top of the screen.
+  let lastTop = null;
   const land = function () {
     if (taken) return;
+    const top = Math.round(target.getBoundingClientRect().top + window.scrollY);
+    if (top === lastTop) return;
+    lastTop = top;
     target.scrollIntoView({ behavior: 'instant', block: 'start' });
   };
   setTimeout(land, 0);
-  // A second pass after the images and the SVG have settled, in case anything
-  // above the target changed height on load.
   window.addEventListener('load', function () { setTimeout(land, 0); }, { once: true });
+  [120, 350, 700].forEach(function (ms) { setTimeout(land, ms); });
 };
 
 HH.start = function (run) {
