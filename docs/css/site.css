@@ -45,10 +45,18 @@
   --absent-soft:  #e9ecf0;
 
   /* The refractive layer. Controls and chrome sit on it; data never does.
-     Kept close to opaque so that no text ever depends on what is behind it. */
-  --glass:        rgba(255, 255, 255, .82);
-  --glass-blur:   saturate(140%) blur(14px);
-  --glass-edge:   inset 0 1px 0 rgba(255, 255, 255, .9);
+     Kept close to opaque so that no text ever depends on what is behind it.
+
+     Two tints, because the layer does two jobs. The masthead is the page's own
+     paper and is only distinguishable by what it refracts, which is the whole
+     idea: it is a pane over the page, not a panel on top of it. A control
+     strip is the opposite case. It has to read as a thing you operate, so it
+     stays lighter than the paper it sits on, which is what keeps the surfaces
+     that take input optically distinct from the surfaces that carry data. */
+  --glass:         rgba(243, 245, 248, .82);   /* --paper, for the masthead */
+  --glass-control: rgba(255, 255, 255, .82);   /* lighter, for control strips */
+  --glass-blur:    saturate(140%) blur(14px);
+  --glass-edge:    inset 0 1px 0 rgba(255, 255, 255, .9);
 
   /* Blur and spread follow The Pay Gap's shadow scale (0 8px 24px -12px, .18
      alpha) so the two sites cast the same weight of shadow; only the rgb
@@ -721,7 +729,7 @@ a.panel:hover, .panel a:hover { border-color: var(--accent); }
 .map-controls {
   display: flex; align-items: center; gap: .75rem; flex-wrap: wrap;
   margin: .7rem 0; padding: .6rem .7rem;
-  background: var(--glass); border: 1px solid var(--rule); border-radius: var(--r);
+  background: var(--glass-control); border: 1px solid var(--rule); border-radius: var(--r);
   -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
   box-shadow: var(--glass-edge);
 }
@@ -864,7 +872,7 @@ a.panel:hover, .panel a:hover { border-color: var(--accent); }
 @media (prefers-contrast: more) {
   :root {
     --rule: #9aa3ae; --rule-strong: #6d7683; --ink-faint: #444b55;
-    --glass: #ffffff;
+    --glass: #f3f5f8; --glass-control: #ffffff;
   }
   .hz-tag, .val-absent { border: 1px solid var(--rule-strong); }
 }
