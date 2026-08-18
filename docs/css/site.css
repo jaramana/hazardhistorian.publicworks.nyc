@@ -64,6 +64,15 @@
   --measure: 34rem;
   --wide:    72rem;
 
+  /* The masthead's own height, 52.81px, the one measurement the
+     publicworks.nyc README pins for every project. Named here because the
+     sticky bar on a desktop screen is something other sticky things and every
+     anchored link have to clear. */
+  --masthead-h: 3.3rem;
+  /* How far below the top of the screen the rail settles. It clears the bar
+     when there is a bar to clear. */
+  --rail-top: 1.75rem;
+
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto,
           "Helvetica Neue", Arial, sans-serif;
   /* Monospace carries records: an event id, a timestamp, a count, a dollar
@@ -169,6 +178,64 @@ a:hover { color: var(--accent-ink); }
    reading and reference sites rather than applications. */
 
 .masthead { border-bottom: 1px solid var(--rule); background: var(--paper); }
+
+/* On a desktop screen the bar travels with the page, on a layer of glass: the
+   content passes under it and is refracted rather than covered, so the site's
+   name and the current section stay to hand without the page losing the sense
+   that it is one continuous thing being scrolled.
+
+   Desktop only, and that qualifier is the whole reason this is back. The
+   objection to a sticky masthead was never how it looked. It was that it takes
+   52.81px from a phone permanently in order to save a scroll gesture that is
+   cheap, and these are reading and reference sites rather than applications.
+   Both halves of the query say "not a phone": (hover: hover) rules out a touch
+   screen, and 60rem rules out a desktop window too narrow to give the space
+   away. Below either threshold the bar is exactly what it was, static and
+   opaque, which is still the case a phone gets.
+
+   None of the measurements in the table above move. This changes what the
+   masthead does, not what it is: same height, same padding, same type, and
+   still identical across the three sites. */
+@media (min-width: 60rem) and (hover: hover) {
+  .masthead {
+    position: sticky; top: 0; z-index: 30;
+    background: var(--glass);
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-edge);
+  }
+
+  /* An anchored link has to land below the bar rather than under it.
+     Without this, method.html#downloads opens with its own heading hidden. */
+  :root { scroll-padding-top: calc(var(--masthead-h) + 1rem); }
+
+  /* This site only: it is the one project with a second sticky thing. The
+     rail settles below the bar rather than behind it. */
+  :root { --rail-top: calc(var(--masthead-h) + 1.75rem); }
+
+  /* Where the page cannot be blurred behind, the bar is simply opaque. */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .masthead { background: var(--paper-raised); }
+  }
+
+  /* A reader who has asked the system for less transparency gets an opaque
+     bar. It still travels with the page; only the refraction goes. */
+  @media (prefers-reduced-transparency: reduce) {
+    .masthead {
+      background: var(--paper-raised);
+      -webkit-backdrop-filter: none; backdrop-filter: none;
+    }
+  }
+
+  /* At 200 per cent zoom a short viewport is most of what a reader has, and a
+     bar that never leaves is most of that. It stops travelling, and the
+     anchor offset goes with it. */
+  @media (max-height: 34rem) {
+    .masthead { position: static; }
+    :root { scroll-padding-top: 0; }
+  }
+}
+
 .masthead-inner {
   display: flex; align-items: center; gap: 1.25rem;
   padding: .55rem 0; flex-wrap: wrap;
@@ -777,7 +844,7 @@ a.panel:hover, .panel a:hover { border-color: var(--accent); }
 
 @media (min-width: 60rem) {
   .with-rail { display: grid; grid-template-columns: minmax(0, 1fr) 14rem; gap: 2.5rem; align-items: start; }
-  .rail { position: sticky; top: 1.75rem; font-size: .85rem; }
+  .rail { position: sticky; top: var(--rail-top); font-size: .85rem; }
   .rail ol { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--rule); }
   .rail li a {
     display: block; padding: .3rem .75rem; color: var(--ink-soft);
@@ -787,10 +854,10 @@ a.panel:hover, .panel a:hover { border-color: var(--accent); }
   .rail li a[aria-current="true"] { color: var(--accent); border-left-color: var(--accent); }
 }
 
-/* At 200 per cent zoom a narrow window is what a reader has, and the sticky
-   masthead is most of it. It stops sticking. */
+/* At 200 per cent zoom a narrow window is what a reader has, and the two
+   sticky things are most of it. The masthead stops sticking in the block that
+   makes it stick; the rail stops here. */
 @media (max-height: 34rem) {
-  .masthead { position: static; }
   .rail { position: static; }
 }
 
