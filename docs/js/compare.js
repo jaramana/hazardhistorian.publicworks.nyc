@@ -107,8 +107,8 @@ function render() {
 
   const table = el('table', { class: 'compare' });
   table.appendChild(el('caption', null,
-    'Measures down the side, events across the top. Every cell that holds no ' +
-    'number says why it holds none.'));
+    'Measures down the side, events across the top. Cells without values ' +
+    'show the reason.'));
 
   const thead = el('thead');
   const hr = el('tr');

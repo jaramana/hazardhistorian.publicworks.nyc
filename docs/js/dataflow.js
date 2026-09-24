@@ -13,7 +13,7 @@ const FLOW = {
     { name: 'NOAA Storm Events', grain: 'Event type, place, window',
       span: '1950 to present, all types from 1996',
       href: 'https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/',
-      role: 'The spine of the archive. Every event begins as a row here.' },
+      role: 'The source records used to identify events.' },
     { name: 'GHCN Daily', grain: 'Station, day',
       span: 'Central Park from 1869',
       href: 'https://www.ncei.noaa.gov/data/global-historical-climatology-network-daily/',
@@ -133,7 +133,7 @@ const FLOW = {
     },
     {
       id: '04', name: 'validate',
-      summary: 'Tests the grains rather than trusting them, and refuses to publish a build that fails.',
+      summary: 'Checks table structure and stops publication if validation fails.',
       rule: 'It fails, rather than warns, when a figure would be wrong.',
       detail: [
         { h: 'Grains are tested, not assumed',

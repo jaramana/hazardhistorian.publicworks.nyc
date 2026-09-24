@@ -1,8 +1,8 @@
 # NYC Hazard Historian
 
 A public record of hazard events in New York City and their documented
-consequences. Every figure carries its source, its period and its status, and
-where there is no figure the site says why there is none.
+consequences. Each figure identifies its source, its period and its status,
+and where there is no figure the site says why there is none.
 
 The site is at [hazardhistorian.publicworks.nyc](https://hazardhistorian.publicworks.nyc).
 It is an experimental project, not an official one. It has no standing, it can
