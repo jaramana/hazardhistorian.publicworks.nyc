@@ -339,13 +339,10 @@ HH.footer = function (meta) {
       'produced by <a href="https://www.nyc.gov/site/em/ready/hazard-mitigation.page">' +
       'New York City Emergency Management</a> or the City of New York. Please ' +
       'refer to them for authoritative information.</p>' +
-    '<p class="built-with">Public data, public method, built with Python and ' +
-      '<span class="wink" title="Four kinds of absence, and not one of them is a zero.">' +
-      'strong opinions about empty cells</span>.</p>' +
     // The portfolio mark, below everything and outside the columns. It is a
     // filing cabinet, not a section of this site, so it is announced once at
     // the foot rather than filed among the site's own pages.
-    '<p class="portfolio">A <a href="https://publicworks.nyc">publicworks.nyc</a> project</p>' +
+    '<p class="portfolio">A <a href="https://publicworks.nyc/">publicworks.nyc</a> project.</p>' +
     '</div>';
 };
 

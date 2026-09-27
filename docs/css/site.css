@@ -317,10 +317,6 @@ main { padding-bottom: 5rem; }
 .footer ul { list-style: none; padding: 0; margin: 0; }
 .footer li { margin-bottom: .25rem; }
 .colophon { margin-top: 1.5rem; font-size: .82rem; }
-/* The build credit, quieter than the disclaimer above it. The colophon now
-   carries the suite's disclaimer verbatim and nothing else, so the voice that
-   used to ride along at the end of it lives here instead. */
-.built-with { margin: .5rem 0 0; font-size: .82rem; color: var(--ink-faint); }
 /* The portfolio mark, at the very foot and outside the link columns. Set
    quieter than the colophon above it and separated by a rule: publicworks.nyc
    is the cabinet these projects are filed in, not a section of this site, so
@@ -332,7 +328,6 @@ main { padding-bottom: 5rem; }
 }
 .portfolio a { color: var(--ink-soft); text-decoration: none; font-weight: 600; }
 .portfolio a:hover { color: var(--accent); text-decoration: underline; }
-.colophon .wink { cursor: help; border-bottom: 1px dotted var(--rule-strong); }
 
 /* The standing caution. Schools Finder carries the same box in the same place,
    for the same reason: an independent compilation should say what it is before
