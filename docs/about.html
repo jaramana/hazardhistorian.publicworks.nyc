@@ -16,9 +16,9 @@
   <section class="wrap console">
     <h1 class="console-h1">About</h1>
     <p class="console-sub">
-      NYC Hazard Historian assembles the public record of hazard events in New
-      York City, from federal and city sources, and shows every figure with its
-      source, its period and its status.
+      NYC Hazard Historian brings New York City hazard events and their
+      documented consequences into one record, with each figure's source,
+      period and status.
     </p>
     <p class="statusline mono" data-statusline></p>
   </section>
@@ -53,23 +53,13 @@
     </ul>
 
     <h2>Built</h2>
-    <p>Python builds the record, in five pipeline stages kept deliberately
-    separate, so a change to one does not force a rerun of the rest. The site
-    itself is static HTML, CSS and JavaScript, with MapLibre GL for maps and
-    CARTO for basemaps.</p>
-    <p>The pipeline and every page are in the
-    <a href="https://github.com/jaramana/hazardhistorian.publicworks.nyc">repository</a>.
-    A run of the pipeline refreshes the data; nothing runs on a schedule.</p>
+    <p>Python's standard library joins and validates the source data in five
+    pipeline stages. The website uses static HTML, CSS and JavaScript, served
+    from GitHub Pages, with MapLibre GL for maps, CARTO basemaps and Iowa
+    radar tiles.</p>
 
     <h2>Independence</h2>
-    <p>No agency reviewed this site. Agency names appear here only as
-    attribution for the data they publish.</p>
-    <p>New York City Emergency Management publishes its own Hazard History
-    and Consequence Tool. This site is a separate reconstruction, built from
-    the same public sources, and does not depend on that tool.</p>
-    <p>If a figure here disagrees with a source you trust, check the source
-    first; the site names its own so that you can. Errors in the processing
-    are this project's fault, and worth reporting.</p>
+    <p>No agency reviewed this site.</p>
 
     <h2>Credits</h2>
     <p>Data from the National Oceanic and Atmospheric Administration, the
@@ -79,13 +69,12 @@
     Mesonet at Iowa State University. Each source is listed with its grain,
     its coverage and its caveat on the
     <a href="method.html#sources">method page</a>.</p>
-    <p>Built with Python, MapLibre GL, CARTO basemaps and Claude.</p>
+    <p>Claude was used in development.</p>
 
     <h2>Reuse</h2>
-    <p>The code is released under the BSD 3-Clause license. The compiled
-    data is free to reuse with attribution. The underlying data carries the
-    terms of the agencies that publish it. If you republish a figure, carry
-    its status and its period with it.</p>
+    <p>Code is BSD 3-Clause licensed. Compiled data can be reused with
+    attribution; the source data retain their own terms. Carry a figure's
+    status and period when republishing it.</p>
 
     <h2>Contact</h2>
     <p>If you find an error,

@@ -60,8 +60,10 @@ rather than treating a blank map as an empty record.
 
 ## Tools
 
-Data pipeline: Python standard library. Site: HTML, CSS, JavaScript and MapLibre
-GL. Maps use CARTO basemaps and Iowa radar tiles. Claude was used in development.
+Data pipeline: Python's standard library joins and validates source data in
+five stages. Website: static HTML, CSS and JavaScript, served from GitHub
+Pages, with MapLibre GL for maps, CARTO basemaps and Iowa radar tiles. Claude
+was used in development.
 
 ## License and reuse
 
