@@ -555,9 +555,23 @@ RADAR = {
 # ---------------------------------------------------------------------------
 # Basemap
 # ---------------------------------------------------------------------------
+# The City's own tiles, which need no key. They exist from zoom 8 up and only
+# inside a box (west, south, east, north); tiles outside return 404, so each
+# map source is limited to its box. Labels cover less ground than the base,
+# and sit above the radar layer.
+#
+# Everywhere else the maps draw Natural Earth land (tools/make_land.py) on
+# water, in the City tiles' own grays.
 BASEMAP = {
-    "tiles": "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
-    "attribution": "Basemap: CARTO, OpenStreetMap contributors",
+    "tiles": "https://maps.nyc.gov/xyz/1.0.0/carto/basemap/{z}/{x}/{y}.jpg",
+    "labels": "https://maps.nyc.gov/xyz/1.0.0/carto/label/{z}/{x}/{y}.png8",
+    "attribution": "Basemap: City of New York. Land: Natural Earth",
+    "bounds": [-75.76, 39.49, -71.83, 41.78],
+    "label_bounds": [-74.5, 39.95, -71.75, 41.5],
+    "min_zoom": 8,
+    "land": "vendor/land.geojson",
+    "land_color": "#eeeeee",
+    "water_color": "#d8d8d8",
     "center": [-73.95, 40.70],
     "zoom": 9.2,
 }

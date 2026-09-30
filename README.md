@@ -54,16 +54,17 @@ rebuild it, but there is no scheduled refresh; the GitHub workflow runs on deman
 Validation blocks publication when source shape or data checks fail. The site
 reports its build date and coverage.
 
-MapLibre is included with the site. Radar tiles from Iowa and basemap imagery from
-CARTO are requested when a map is used; those views report an unavailable service
-rather than treating a blank map as an empty record.
+MapLibre is included with the site. Radar tiles from Iowa and basemap imagery
+from the City of New York are requested when a map is used; those views report
+an unavailable service rather than treating a blank map as an empty record.
 
 ## Tools
 
 Data pipeline: Python's standard library joins and validates source data in
 five stages. Website: static HTML, CSS and JavaScript, served from GitHub
-Pages, with MapLibre GL for maps, CARTO basemaps and Iowa radar tiles. Claude
-was used in development.
+Pages, with MapLibre GL for maps, City of New York basemaps, Natural Earth
+land outlines and Iowa radar tiles. `tools/make_land.py` builds the land file.
+Claude was used in development.
 
 ## License and reuse
 

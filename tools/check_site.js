@@ -161,6 +161,18 @@ ok('the index carries every key the explorer reads', missingFields.length === 0,
   ok(`meta.${k} exists`, k in meta);
 });
 
+// The maps read these fields directly. A {s} or {r} placeholder would be
+// requested literally.
+['tiles', 'labels', 'attribution', 'bounds', 'label_bounds', 'min_zoom', 'land',
+ 'land_color', 'water_color'].forEach(k => {
+  ok(`meta.basemap.${k} exists`, meta.basemap && k in meta.basemap);
+});
+ok('the land outline the maps draw is in the site',
+  fs.existsSync(path.join(ROOT, meta.basemap.land)), meta.basemap.land);
+ok('basemap tile URLs carry only {z}, {x} and {y}',
+  [meta.basemap.tiles, meta.basemap.labels].every(u =>
+    typeof u === 'string' && !/\{(?![zxy]\})[^}]*\}/.test(u)));
+
 const everyHazard = new Set(index.flatMap(e => e.h));
 const unknown = [...everyHazard].filter(h => !(h in meta.hazards));
 ok('every hazard in the index is declared in the vocabulary', unknown.length === 0,

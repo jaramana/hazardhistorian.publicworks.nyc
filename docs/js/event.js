@@ -58,6 +58,33 @@ function withMap(container, build) {
   }
 }
 
+/* The City's basemap and its label layer, limited to the zooms and area the
+   tiles cover. Outside that box the map shows the Natural Earth land below,
+   with no failed requests. */
+function basemapSource(layer) {
+  const b = META.basemap;
+  if (layer === 'labels') {
+    return { type: 'raster', tileSize: 256, tiles: [b.labels],
+      bounds: b.label_bounds, minzoom: b.min_zoom };
+  }
+  return { type: 'raster', tileSize: 256, tiles: [b.tiles],
+    bounds: b.bounds, minzoom: b.min_zoom, attribution: b.attribution };
+}
+
+function landSource() {
+  return { type: 'geojson', data: new URL(META.basemap.land, location.href).href };
+}
+
+/* Water and land, drawn first so every map has a coastline at every zoom. */
+function groundLayers() {
+  return [
+    { id: 'water', type: 'background',
+      paint: { 'background-color': META.basemap.water_color } },
+    { id: 'land', type: 'fill', source: 'land',
+      paint: { 'fill-color': META.basemap.land_color } }
+  ];
+}
+
 function mapUnavailable(container, why) {
   const box = el('div', { class: 'empty' });
   box.appendChild(el('h3', null, 'No map here'));
@@ -722,18 +749,18 @@ function renderRadar() {
     style: {
       version: 8,
       sources: {
-        base: {
-          type: 'raster', tileSize: 256,
-          tiles: [META.basemap.tiles.replace('{s}', 'a').replace('{r}', '')],
-          attribution: META.basemap.attribution
-        },
+        land: landSource(),
+        base: basemapSource('base'),
         radar: { type: 'raster', tileSize: 256, tiles: [tileUrl(frames[0])],
-          attribution: cfg.attribution }
+          attribution: cfg.attribution },
+        labels: basemapSource('labels')
       },
       layers: [
+        ...groundLayers(),
         { id: 'base', type: 'raster', source: 'base' },
         { id: 'radar', type: 'raster', source: 'radar',
-          paint: { 'raster-opacity': 0.75 } }
+          paint: { 'raster-opacity': 0.75 } },
+        { id: 'labels', type: 'raster', source: 'labels' }
       ]
     },
     center: META.basemap.center,
@@ -853,13 +880,13 @@ function renderTrack() {
     style: {
       version: 8,
       sources: {
-        base: { type: 'raster', tileSize: 256,
-          tiles: [META.basemap.tiles.replace('{s}', 'a').replace('{r}', '')],
-          attribution: META.basemap.attribution },
+        land: landSource(),
+        base: basemapSource('base'),
         line: { type: 'geojson', data: { type: 'FeatureCollection', features: features } },
         pts: { type: 'geojson', data: { type: 'FeatureCollection', features: points } }
       },
       layers: [
+        ...groundLayers(),
         { id: 'base', type: 'raster', source: 'base' },
         { id: 'line', type: 'line', source: 'line',
           paint: { 'line-color': '#8f4415', 'line-width': 2.5 } },
