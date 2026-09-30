@@ -9,3 +9,6 @@ __pycache__/
 Mockups/
 nyc-hazard-historian-claude-brief.md
 working-with-claude_jaramana_2026-08-08.md
+
+# Local editor and preview settings
+.claude/
