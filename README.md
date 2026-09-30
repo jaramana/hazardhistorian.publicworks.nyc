@@ -39,7 +39,7 @@ examined and those rejected.
   inflation-adjusted amount.
 - NOAA direct and indirect deaths remain separate; they are not added together.
 
-The [method page](https://hazardhistorian.publicworks.nyc/method.html) explains
+The [Data page](https://hazardhistorian.publicworks.nyc/data.html) explains
 the joins, measures and known gaps. School attendance, power outages and several
 other consequences are absent because a public series at the needed grain was not
 found. The City's tool reports 2,431 entries against 2,392 event rows here; the
@@ -49,10 +49,23 @@ difference in Sandy death counts.
 
 ## Updates
 
-The site serves a checked-in data snapshot. The Python pipeline in `run.py` can
-rebuild it, but there is no scheduled refresh; the GitHub workflow runs on demand.
+The site serves a checked-in data snapshot. The Python pipeline can rebuild it,
+but there is no scheduled refresh; the GitHub workflow runs on demand.
 Validation blocks publication when source shape or data checks fail. The site
 reports its build date and coverage.
+
+```sh
+python3 run.py
+```
+
+The five stages use the Python standard library, so there is nothing to install.
+`run.py --stage 3` runs one stage, `--from 3` runs stage 3 onward,
+`--force-fetch` downloads every source again and `--skip-fetch` uses the cache.
+`pipeline/00_config.py` holds the source URLs, zone and county mapping, hazard
+vocabulary and validation thresholds. The export writes `docs/data/index.json`
+(the search index), `docs/data/meta.json` (sources and vocabularies) and one file
+for each event in `docs/data/events/`. There is no API. `dataflow.html` draws the
+pipeline from the same configuration it runs on.
 
 MapLibre is included with the site. Radar tiles from Iowa and basemap imagery
 from the City of New York are requested when a map is used; those views report

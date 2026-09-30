@@ -34,7 +34,7 @@ using the BLS CPI-U for New York-Newark-Jersey City, series CUURS12ASA0.
 Column names state which is which.
 
 Sources, coverage and known limitations are at
-https://hazardhistorian.publicworks.nyc/method.html
+https://hazardhistorian.publicworks.nyc/data.html
 
 This project is not affiliated with New York City Emergency Management or the
 City of New York. It reconstructs a public record from published sources.

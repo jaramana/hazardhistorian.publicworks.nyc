@@ -226,7 +226,7 @@ using the BLS CPI-U for New York-Newark-Jersey City, series {cfg.CPI_SERIES}.
 Column names state which is which.
 
 Sources, coverage and known limitations are at
-https://{cfg.SITE_HOST}/method.html
+https://{cfg.SITE_HOST}/data.html
 
 This project is not affiliated with New York City Emergency Management or the
 City of New York. It reconstructs a public record from published sources.

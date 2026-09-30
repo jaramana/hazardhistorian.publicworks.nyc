@@ -313,7 +313,7 @@ function renderConsequences() {
   });
 
   // What is missing from the record as a whole is a property of the record, not
-  // of this event, and it is set out on the method page. Repeating four
+  // of this event, and it is set out on the data page. Repeating four
   // paragraphs of it under every one of nine hundred events made the absence
   // look like a finding about the storm.
   const pointer = el('p', { class: 'val-note', style: 'margin-top:1rem' });
@@ -321,7 +321,7 @@ function renderConsequences() {
     'School attendance, power outages, sanitation operations and pre-2020 ' +
     'subway ridership are not published at a grain this record can use, for ' +
     'any event. '));
-  pointer.appendChild(el('a', { href: 'method.html#not-here' },
+  pointer.appendChild(el('a', { href: 'data.html#limits' },
     'What is not here, and why'));
   pointer.appendChild(document.createTextNode('.'));
   holder.parentNode.appendChild(pointer);

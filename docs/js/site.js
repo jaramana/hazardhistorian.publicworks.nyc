@@ -286,7 +286,7 @@ HH.copyLink = function (button) {
 
    The left column is the navigation, in the same words as the navigation. A
    footer that renames the pages above it makes a reader hold two maps of one
-   site. The sources belong on the method page, where each one is listed with
+   site. The sources belong on the data page, where each one is listed with
    its grain, its coverage and its caveat; a bare list of publishers down here
    would be the same links stripped of everything that makes them useful. */
 
@@ -308,11 +308,11 @@ HH.footer = function (meta) {
         ['explore.html', 'Explore events'],
         ['compare.html', 'Compare events']
       ]) + '</ul></div>' +
-      // Pages, not sections. Four entries that all opened method.html at a
+      // Pages, not sections. Four entries that all opened one page at a
       // different anchor read as four destinations and were one. One of the
       // anchors, #fields, did not exist on the page at all.
       '<div><h4>Reference</h4><ul>' + links([
-        ['method.html', 'Method'],
+        ['data.html', 'Data'],
         ['about.html', 'About']
       ]) + '</ul></div>' +
       '<div><h4>Sources</h4><ul>' + links([
@@ -355,7 +355,7 @@ HH.footer = function (meta) {
 HH.pages = [
   { href: 'explore.html', nav: 'Explore' },
   { href: 'compare.html', nav: 'Compare' },
-  { href: 'method.html',  nav: 'Method' },
+  { href: 'data.html',    nav: 'Data' },
   { href: 'about.html',   nav: 'About' }
 ];
 

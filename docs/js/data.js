@@ -1,10 +1,8 @@
-/* The method page, which is also the data page.
+/* The Data page.
 
-   Method and data were two pages saying the same things twice: what a source
-   publishes, what a status means, what a dollar is adjusted to. They are one
-   page now. The parts that must not drift from the build, the status
-   vocabulary, the source manifest and the last build's warnings, are rendered
-   from the metadata the pipeline wrote rather than typed into the markup. */
+   The parts that must not drift from the build, the status vocabulary, the
+   source manifest and the last build's warnings, are rendered from the
+   metadata the pipeline wrote rather than typed into the markup. */
 
 // var, not const: every script shares one global scope, and two top-level
 // const declarations of the same name are a syntax error that kills the page.
