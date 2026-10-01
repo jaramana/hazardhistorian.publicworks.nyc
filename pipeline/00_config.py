@@ -342,10 +342,10 @@ SOURCES = {
     "nyc-311": {
         "publisher": "NYC Open Data",
         "name": "311 Service Requests",
-        "url": "https://data.cityofnewyork.us/",
+        "url": "https://data.cityofnewyork.us/d/erm2-nwe9",
         "licence": "NYC Open Data terms",
         "grain": "One row per service request",
-        "coverage": "2004 to present, across eight datasets",
+        "coverage": "2004 to present, across eight datasets; erm2-nwe9 is the current one",
         "caveat": (
             "Resident-reported, so it measures reporting as well as impact. "
             "Complaint vocabularies change across the dataset splits."
@@ -354,7 +354,7 @@ SOURCES = {
     "nyc-collisions": {
         "publisher": "NYC Open Data, NYPD",
         "name": "Motor Vehicle Collisions, Crashes",
-        "url": "https://data.cityofnewyork.us/resource/h9gi-nx95.json",
+        "url": "https://data.cityofnewyork.us/d/h9gi-nx95",
         "licence": "NYC Open Data terms",
         "grain": "One row per reported collision",
         "coverage": "July 2012 to present",

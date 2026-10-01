@@ -16,7 +16,8 @@ never collected.
 | [Iowa Environmental Mesonet](https://mesonet.agron.iastate.edu/) | Radar tiles shown live in the browser | From the 1990s; higher-resolution tiles from 2011 |
 | [HURDAT2](https://www.nhc.noaa.gov/data/) | Tropical cyclone tracks | 1851–2025 |
 | [OpenFEMA](https://www.fema.gov/about/openfema/data-sets) | Public assistance and flood-insurance claims | Assistance from 1998; claims from 1978 |
-| [NYC Open Data](https://data.cityofnewyork.us/) | 311 requests and collisions | 311 from 2004; collisions from July 2012 |
+| [311 Service Requests](https://data.cityofnewyork.us/d/erm2-nwe9), `erm2-nwe9`, and seven earlier yearly datasets | 311 requests near each event | From 2004 |
+| [Motor Vehicle Collisions, Crashes](https://data.cityofnewyork.us/d/h9gi-nx95), `h9gi-nx95` | Collisions near each event | From July 2012 |
 | [BLS New York area CPI-U](https://www.bls.gov/cpi/) | Inflation-adjusted dollar amounts | From 1953 |
 
 The dated [source manifest](research/source-manifest.md) records the sources
