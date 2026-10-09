@@ -301,9 +301,8 @@ HH.footer = function (meta) {
   el.className = 'footer';
   el.innerHTML =
     '<div class="wrap"><div class="footer-grid">' +
-      // dataflow.html is deliberately unlinked. The page stays published and
-      // works for anyone who has its address, but nothing on the site points
-      // at it and it carries a noindex.
+      // dataflow.html stays out of the nav and footer. The Data page links to
+      // it once, under its step list.
       '<div><h2 class="footer-head">Views</h2><ul>' + links([
         ['explore.html', 'Explore events'],
         ['compare.html', 'Compare events']
