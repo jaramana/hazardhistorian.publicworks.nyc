@@ -81,6 +81,9 @@
   background: var(--absent-soft);
 }
 .df-card-name { margin: 0 0 .2rem; font-weight: 600; font-size: .95rem; color: var(--ink); }
+/* WCAG 2.5.8 asks for 24 by 24 pixels. This grows the hit area of a card's
+   page link, not its type. */
+.df-card-name a { display: inline-block; padding-block: 3px; }
 .df-card-name a { text-decoration: none; }
 .df-card-name a:hover { text-decoration: underline; }
 .df-card-name.df-mono { font-family: var(--mono); font-size: .85rem; font-weight: 500; }
@@ -171,7 +174,7 @@
 }
 
 .df-note { margin-top: .9rem; max-width: var(--measure); }
-.df-note h4 { margin: 0 0 .2rem; font-size: .88rem; font-weight: 600; color: var(--ink); }
+.df-note h3 { margin: 0 0 .2rem; font-size: .88rem; font-weight: 600; letter-spacing: -.022em; color: var(--ink); }
 .df-note p  { margin: 0; font-size: .89rem; color: var(--ink-soft); }
 
 /* ---- The canonical-tables table ---------------------------------- */
@@ -201,7 +204,7 @@
   border-radius: 5px; background: var(--paper-sunken);
   padding: .7rem .85rem; margin-bottom: .55rem;
 }
-.df-sub h5 { margin: 0 0 .15rem; font-size: .92rem; font-weight: 600; color: var(--ink); }
+.df-sub h4 { margin: 0 0 .15rem; font-size: .92rem; font-weight: 600; line-height: inherit; letter-spacing: normal; color: var(--ink); }
 .df-sub-note { margin: 0 0 .55rem; font-size: .82rem; font-style: italic; color: var(--ink-faint); }
 .df-steps { margin: 0; padding-left: 1.15rem; display: grid; gap: .35rem; }
 .df-steps li { font-size: .86rem; color: var(--ink-soft); }
@@ -232,3 +235,7 @@
   .df-stats dd { font-size: 1.1rem; }
   .df-stage { padding-left: .9rem; }
 }
+
+/* The bands show once the counts above them are in, so nothing under the
+   toolbar moves while they fill. */
+main.is-loading .df-band, main.is-loading .df-flow, main.is-loading .df-foot { display: none; }

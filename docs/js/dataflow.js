@@ -240,17 +240,17 @@ function stageBody(stage) {
 
   (stage.detail || []).forEach(d => {
     const block = el('div', 'df-note');
-    block.append(el('h4', null, d.h));
+    block.append(el('h3', null, d.h));
     block.append(el('p', null, d.p));
     body.append(block);
   });
 
   if (stage.subs) {
     const subs = el('div', 'df-subs');
-    subs.append(el('h4', 'df-subs-title', 'What each source costs to attach'));
+    subs.append(el('h3', 'df-subs-title', 'What each source costs to attach'));
     stage.subs.forEach(sub => {
       const box = el('section', 'df-sub');
-      box.append(el('h5', null, sub.name));
+      box.append(el('h4', null, sub.name));
       box.append(el('p', 'df-sub-note', sub.note));
       const ol = el('ol', 'df-steps');
       sub.steps.forEach(([label, text]) => {
@@ -362,4 +362,4 @@ renderStages();
 renderOutputs();
 renderSite();
 wireControls();
-loadStats();
+loadStats().then(() => document.getElementById('main-content').classList.remove('is-loading'));

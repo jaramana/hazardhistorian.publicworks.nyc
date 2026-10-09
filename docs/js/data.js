@@ -18,7 +18,7 @@ function el(tag, attrs, text) {
 }
 
 HH.start(function (meta) {
-  document.getElementById('built').textContent = HH.buildDate(meta.built);
+  document.getElementById('built').textContent = HH.dataDate(meta.built);
   document.getElementById('n-events').textContent = HH.num(meta.events);
   document.getElementById('n-rows').textContent = HH.num(meta.event_rows);
   document.getElementById('base-year').textContent = meta.cpi.base_year;

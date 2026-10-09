@@ -304,25 +304,25 @@ HH.footer = function (meta) {
       // dataflow.html is deliberately unlinked. The page stays published and
       // works for anyone who has its address, but nothing on the site points
       // at it and it carries a noindex.
-      '<div><h4>Views</h4><ul>' + links([
+      '<div><h2 class="footer-head">Views</h2><ul>' + links([
         ['explore.html', 'Explore events'],
         ['compare.html', 'Compare events']
       ]) + '</ul></div>' +
       // Pages, not sections. Four entries that all opened one page at a
       // different anchor read as four destinations and were one. One of the
       // anchors, #fields, did not exist on the page at all.
-      '<div><h4>Reference</h4><ul>' + links([
+      '<div><h2 class="footer-head">Reference</h2><ul>' + links([
         ['data.html', 'Data'],
         ['about.html', 'About']
       ]) + '</ul></div>' +
-      '<div><h4>Sources</h4><ul>' + links([
+      '<div><h2 class="footer-head">Sources</h2><ul>' + links([
         ['https://www.ncei.noaa.gov/products/storm-events-database', 'NOAA Storm Events'],
         ['https://www.ncei.noaa.gov/products/land-based-station/global-historical-climatology-network-daily', 'GHCN Daily'],
         ['https://tidesandcurrents.noaa.gov/', 'NOAA Tides and Currents'],
         ['https://www.fema.gov/about/openfema/data-sets', 'OpenFEMA']
       ]) + '</ul></div>' +
       // Code, not pages. About lives in Reference and was listed twice.
-      '<div><h4>Project</h4><ul>' + links([
+      '<div><h2 class="footer-head">Project</h2><ul>' + links([
         [HH.REPO, 'Source on GitHub'],
         [HH.REPO + '/issues', 'Report an error']
       ]) + '</ul></div>' +

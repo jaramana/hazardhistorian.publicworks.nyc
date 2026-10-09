@@ -144,11 +144,18 @@ HH.date = function (iso, opts) {
 };
 
 /* The build date, which is metadata about the site rather than a date in the
-   record. The Pay Gap and Schools Finder both print it as the plain ISO date
-   the pipeline wrote, so this does too. HH.date stays for event dates, which
-   are read as prose and have no equivalent on the other two sites. */
+   record. Status lines print it as the plain ISO date the pipeline wrote, as
+   The Pay Gap and Schools Finder do. HH.date stays for event dates. */
 HH.buildDate = function (iso) {
   return iso ? String(iso).slice(0, 10) : '';
+};
+
+/* The build date written out, as every Data page shows it: 14 August 2026.
+   Read as UTC so the day does not slip west of Greenwich. */
+HH.dataDate = function (iso) {
+  if (!iso) return '';
+  return new Date(String(iso).slice(0, 10) + 'T00:00:00Z').toLocaleDateString('en-GB',
+    { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 };
 
 HH.dateTime = function (iso) {

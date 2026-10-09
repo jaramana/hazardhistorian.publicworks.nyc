@@ -310,7 +310,8 @@ main { padding-bottom: 5rem; }
   display: grid; gap: 1.5rem;
   grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
 }
-.footer h4 {
+/* Column titles are h2 for the outline and look like small labels. */
+.footer .footer-head {
   font-size: .75rem; text-transform: uppercase; letter-spacing: .09em;
   color: var(--ink-faint); margin: 0 0 .5rem;
 }
@@ -482,6 +483,12 @@ input[type="date"] { min-width: 0; }
   margin-top: 1rem; padding-top: .9rem; border-top: 1px solid var(--rule);
 }
 .query-actions .spacer { margin-left: auto; }
+.query fieldset { border: 0; padding: 0; margin: 0; }
+.query fieldset.wide { grid-column: span 2; }
+.query-grid.facets { margin-top: .75rem; }
+#hz-list { gap: .35rem 1rem; }
+#picked { margin-top: 0; }
+#status-list { max-width: 36rem; }
 
 .disclosure { margin-top: .9rem; }
 .disclosure > summary {
@@ -766,6 +773,8 @@ a.panel:hover, .panel a:hover { border-color: var(--accent); }
   background: var(--paper-raised);
 }
 .empty h3 { color: var(--ink); }
+/* An empty state that opens a page is an h2, sized like the h3 elsewhere. */
+.empty h2 { color: var(--ink); font-size: 1.1rem; letter-spacing: -.01em; margin-top: 2em; }
 .empty p { max-width: var(--measure); }
 .empty .suggestions { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: 1rem; }
 .empty-centred { text-align: center; }
@@ -909,6 +918,26 @@ a.panel:hover, .panel a:hover { border-color: var(--accent); }
 }
 .process h3 { margin: 0 0 .2rem; font-size: 1rem; }
 .process p { margin: 0; color: var(--ink-soft); }
+
+/* ---- Stable first paint ---------------------------------------- */
+/* Containers that script fills keep their filled height from the first
+   paint, so the text under them does not jump when they fill. The heights
+   are what each one measures once filled. The footer starts below the fold,
+   so a short page filling in does not shove it either. */
+@media screen { main { min-height: calc(100vh - var(--masthead-h)); } }
+/* The masthead is drawn by script. Until it is, its slot holds the height
+   it will have at that width: one row, or the nav wrapping to two or three. */
+header[data-chrome="masthead"]:empty { display: block; min-height: 52.83px; }
+@media (max-width: 46rem) { header[data-chrome="masthead"]:empty { min-height: 104.83px; } }
+@media (max-width: 19.3rem) { header[data-chrome="masthead"]:empty { min-height: 141.45px; } }
+.statusline[data-statusline]:empty { min-height: 20.47px; }
+@media (max-width: 37.1rem) { .statusline[data-statusline]:empty { min-height: 40.94px; } }
+@media (max-width: 20.45rem) { .statusline[data-statusline]:empty { min-height: 61.41px; } }
+#home-search:empty { min-height: 51.25px; }
+#builder:empty { min-height: 96.58px; }
+@media (max-width: 46rem) { #builder:empty { min-height: 215.2px; } }
+#char-note:empty { min-height: 17.02px; }
+@media (max-width: 22.2rem) { #char-note:empty { min-height: 34.03px; } }
 
 @media print {
   .nav, .query, .pager, .map-controls, .actions, .rail { display: none; }

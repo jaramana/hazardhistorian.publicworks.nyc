@@ -89,7 +89,7 @@ function render() {
 
   if (!EVENTS.length) {
     const box = el('div', { class: 'empty empty-centred' });
-    box.appendChild(el('h3', null, 'Nothing selected yet'));
+    box.appendChild(el('h2', null, 'Nothing selected yet'));
     box.appendChild(el('p', null,
       'Tick up to ' + META.compare_max + ' events in the explorer and they ' +
       'appear here side by side, measure by measure. The comparison is a link, ' +
